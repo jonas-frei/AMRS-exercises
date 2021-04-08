@@ -3,11 +3,10 @@
 
 #include <eeros/sequencer/Sequencer.hpp>
 #include <eeros/sequencer/Sequence.hpp>
-#include <eeros/sequencer/Wait.hpp>
 #include <eeros/safety/SafetySystem.hpp>
 #include "MyRobotSafetyProperties.hpp"
 #include "ControlSystem.hpp"
-#include <unistd.h>
+#include <eeros/sequencer/Wait.hpp>
 
 class MainSequence : public eeros::sequencer::Sequence
 {
