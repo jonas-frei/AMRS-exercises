@@ -1,0 +1,19 @@
+[
+{
+  "directory": "/home/jf/eeros-basic-template/build",
+  "command": "/opt/ost-distro/1.0/sysroots/x86_64-pokysdk-linux/usr/bin/arm-poky-linux-gnueabi/arm-poky-linux-gnueabi-g++   -mfpu=neon -mfloat-abi=hard -mcpu=cortex-a8 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/ost-distro/1.0/sysroots/cortexa8hf-neon-poky-linux-gnueabi --sysroot=/opt/ost-distro/1.0/sysroots/cortexa8hf-neon-poky-linux-gnueabi     -O2 -pipe -g -feliminate-unused-debug-types  -g   -std=gnu++14 -o CMakeFiles/template_project.dir/main.cpp.o -c /home/jf/eeros-basic-template/main.cpp",
+  "file": "/home/jf/eeros-basic-template/main.cpp"
+},
+
+{
+  "directory": "/home/jf/eeros-basic-template/build",
+  "command": "/opt/ost-distro/1.0/sysroots/x86_64-pokysdk-linux/usr/bin/arm-poky-linux-gnueabi/arm-poky-linux-gnueabi-g++   -mfpu=neon -mfloat-abi=hard -mcpu=cortex-a8 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/ost-distro/1.0/sysroots/cortexa8hf-neon-poky-linux-gnueabi --sysroot=/opt/ost-distro/1.0/sysroots/cortexa8hf-neon-poky-linux-gnueabi     -O2 -pipe -g -feliminate-unused-debug-types  -g   -std=gnu++14 -o CMakeFiles/template_project.dir/ControlSystem.cpp.o -c /home/jf/eeros-basic-template/ControlSystem.cpp",
+  "file": "/home/jf/eeros-basic-template/ControlSystem.cpp"
+},
+
+{
+  "directory": "/home/jf/eeros-basic-template/build",
+  "command": "/opt/ost-distro/1.0/sysroots/x86_64-pokysdk-linux/usr/bin/arm-poky-linux-gnueabi/arm-poky-linux-gnueabi-g++   -mfpu=neon -mfloat-abi=hard -mcpu=cortex-a8 -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/ost-distro/1.0/sysroots/cortexa8hf-neon-poky-linux-gnueabi --sysroot=/opt/ost-distro/1.0/sysroots/cortexa8hf-neon-poky-linux-gnueabi     -O2 -pipe -g -feliminate-unused-debug-types  -g   -std=gnu++14 -o CMakeFiles/template_project.dir/MyRobotSafetyProperties.cpp.o -c /home/jf/eeros-basic-template/MyRobotSafetyProperties.cpp",
+  "file": "/home/jf/eeros-basic-template/MyRobotSafetyProperties.cpp"
+}
+]
