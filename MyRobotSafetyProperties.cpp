@@ -33,7 +33,7 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
 
     // Define input states and events for all levels
     //level.setInputActions({...});
-    
+
     // Define output states and events for all levels
     // level.setOutputActions({ ... });
 
