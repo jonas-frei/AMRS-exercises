@@ -1,9 +1,0 @@
-# ninja log v5
-0	750	1617898330180671935	CMakeFiles/template_project.dir/MyRobotSafetyProperties.cpp.o	c36032bcad829359
-0	882	1617898330308664383	CMakeFiles/template_project.dir/ControlSystem.cpp.o	d2ee4da1a2b6716a
-0	1233	1617898330660643613	CMakeFiles/template_project.dir/main.cpp.o	f792f185cd8bbbeb
-1233	1295	1617898330724639838	template_project	b60535ae4ffdb92c
-1	771	1617898368338417824	CMakeFiles/template_project.dir/MyRobotSafetyProperties.cpp.o	c36032bcad829359
-1	866	1617898368434412147	CMakeFiles/template_project.dir/ControlSystem.cpp.o	d2ee4da1a2b6716a
-0	1227	1617898368794390857	CMakeFiles/template_project.dir/main.cpp.o	f792f185cd8bbbeb
-1227	1289	1617898368854387310	template_project	b60535ae4ffdb92c

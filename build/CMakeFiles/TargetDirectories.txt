@@ -1,3 +1,0 @@
-/home/jf/eeros-basic-template/build/CMakeFiles/rebuild_cache.dir
-/home/jf/eeros-basic-template/build/CMakeFiles/template_project.dir
-/home/jf/eeros-basic-template/build/CMakeFiles/edit_cache.dir
