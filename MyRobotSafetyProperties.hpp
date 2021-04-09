@@ -23,7 +23,7 @@ private:
     // eeros::hal::Output<bool>* ...;
 
     // Define all critical inputs
-    //eeros::hal::Input<bool>* ...;
+    // eeros::hal::Input<bool>* ...;
 
     ControlSystem &cs;
 };

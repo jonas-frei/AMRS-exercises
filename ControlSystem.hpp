@@ -11,7 +11,7 @@ using namespace eeros::control;
 class ControlSystem
 {
 public:
-    ControlSystem(double ts);
+    ControlSystem(double dt);
 
     // Define Blocks
     Constant<> myConstant;

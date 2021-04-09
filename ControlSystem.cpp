@@ -1,9 +1,13 @@
 #include "ControlSystem.hpp"
 
-ControlSystem::ControlSystem(double ts)
+ControlSystem::ControlSystem(double dt)
     : myConstant(1.0), myGain(2.0),
-      timedomain("Main time domain", ts, true)
+      timedomain("Main time domain", dt, true)
 {
+    // Name all blocks
+    myConstant.setName("My constant");
+    myGain.setName("My gain");
+
     // Name all signals
     myConstant.getOut().getSignal().setName("My constant value");
     myGain.getOut().getSignal().setName("My constant value multiplied with my gain");

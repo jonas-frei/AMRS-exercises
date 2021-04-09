@@ -18,6 +18,7 @@ public:
           ss(ss),
           sp(sp),
           cs(cs),
+
           sleep("Sleep", this)
     {
         log.info() << "Sequence created: " << name;

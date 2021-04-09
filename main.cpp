@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 
     log.info() << "Starting template project...";
 
-    //log.info() << "Initializing hardware...";
+    // log.info() << "Initializing hardware...";
     // eeros::hal::HAL& hal = eeros::hal::HAL::instance();
     // hal.readConfigFromFile(&argc, argv);
 

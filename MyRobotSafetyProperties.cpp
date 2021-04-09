@@ -2,6 +2,7 @@
 
 MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     : cs(cs),
+    
       slSystemOff("System is offline"),
       slSystemOn("System is online"),
 
@@ -16,7 +17,7 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     // criticalOutputs = { ... };
 
     // Declare critical inputs
-    // ... = eeros::hal::HAL::instance().getLogicInput(..., ...);
+    // ... = eeros::hal::HAL::instance().getLogicInput("...", ...);
 
     // criticalInputs = { ... };
 
@@ -32,7 +33,7 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     // addEventToAllLevelsBetween(lowerLevel, upperLevel, event, targetLevel, kPublicEvent/kPrivateEvent);
 
     // Define input states and events for all levels
-    //level.setInputActions({...});
+    // level.setInputActions({ ... });
 
     // Define output states and events for all levels
     // level.setOutputActions({ ... });
