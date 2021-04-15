@@ -24,5 +24,7 @@ file(GLOB all_SRCS
 		"${PROJECT_SOURCE_DIR}/src/*.c"
         )
 
-add_executable(${PROJECT_NAME} ${all_SRCS})
+add_custom_command(OUTPUT copyHalConfig POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_SOURCE_DIR}/config/*.json" "${CMAKE_BINARY_DIR}")
+
+add_executable(${PROJECT_NAME} ${all_SRCS} copyHalConfig)
 target_link_libraries(${PROJECT_NAME} eeros ucl ${CMAKE_DL_LIBS})
