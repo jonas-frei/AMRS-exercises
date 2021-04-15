@@ -48,11 +48,11 @@ use_custom_application=true
 
 custom_application_name=template_project
 
-custom_application_git_remote_address=https://gitlab.ost.ch/ost-robotics-buchs/eeros-template-project.git
+custom_application_git_remote_address=https://github.com/eeros-project/simple-motor-control.git
 custom_application_git_version=master
 
-custom_application_source_dir="$wd"
-custom_application_build_dir="$build_dir"
+custom_application_source_dir="$wd/$custom_application_name"
+custom_application_build_dir="$build_dir/$custom_application_name"
 
 eeros_required_version=1.2.0.0
 bbblue_eeros_required_version=1.2.0.0
@@ -108,4 +108,3 @@ ros_setup_script=/opt/ost-distro/1.0/sysroots/cortexa8hf-neon-poky-linux-gnueabi
 target_IP_address=192.168.7.2
 target_username=ost
 target_application_folder=/home/ost/
-

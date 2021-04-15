@@ -1,1 +1,1 @@
-/home/jf/eeros-template-project/build-armhf/template_project
+/home/jf/eeros-template-project/build-armhf/template_project/template_project
