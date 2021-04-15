@@ -42,8 +42,10 @@ In order to be able to compile your project on the host, you need to have the [E
 
     `rm -rf .git`
 
-5. Replace `template_project` with `YOUR_PROJECT_NAME` in the following files:
+5. Replace `template_project` with `YOUR_PROJECT_NAME` in the following files and folders:
 
+    - Folder `template_project` in `main project folder`
+    
     - File `config.sh.in`, line `custom_application_name=template_project`
 
     - File `deploy.txt`, line `./build-armhf/template_project/template_project`
