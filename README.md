@@ -64,4 +64,6 @@ In order to be able to compile your project on the host, you need to have the [E
 
         `./deploy.sh`
 
-8. Start working on your own project by modifying the code, creating new blocks and sequences, ...
+8. SSH into the target and run the application.
+
+9. Start working on your own project by modifying the code, creating new blocks and sequences, ...
