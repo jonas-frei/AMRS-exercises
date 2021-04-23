@@ -11,7 +11,10 @@ class CustomBlockName : public Block
 public:
     CustomBlockName() {}
 
-    virtual void run() {}
+    virtual void run()
+    {
+        // do something
+    }
 
 protected:
 };

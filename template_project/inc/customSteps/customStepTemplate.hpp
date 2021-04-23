@@ -12,24 +12,10 @@ public:
         log.info() << "Step created: " << name;
     }
 
-    bool checkPreCondition()
-    {
-        return true;
-    }
-
-    int operator()()
-    {
-        return start();
-    }
-
     int action()
     {
+        // do something
         return 0;
-    }
-
-    bool checkExitCondition()
-    {
-        return true;
     }
 
 private:
