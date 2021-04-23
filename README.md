@@ -1,6 +1,6 @@
 # Description
 
-Basic EEROS project for the Beaglebone Blue with a minimal control system, safety system and sequencer. This serves as a template to start working on a new project.
+Basic EEROS project with a minimal control system, safety system and sequencer. This serves as a template to start working on a new project.
 
 # Overview
 
@@ -12,32 +12,36 @@ Main project folder
 | |*.cpp
 |-include
 | |*.hpp
-|-config
-| |HWConfigBBBlue.json
 ```
 
-The main project folder contains all the code and the CMakeLists.txt file, which is needed to compile the application. *.cpp files are stored in the src folder and *.hpp files in the inc folder. In the config folder is the HWConfigBBBlue.json file, which is used to interface with the hardware through the HAL.
+The main project folder contains all the code and the CMakeLists.txt file, which is needed to compile the application. *.cpp files are stored in the src folder and *.hpp files in the inc folder.
 
 # Prerequisits
 
-In order to be able to compile your project on the host, you need to have the [EEROS SDK installed](https://wiki.eeros.org/getting_started/install/use_on_bbb).
+In order to be able to compile your project, you need to have [EEROS installed](https://wiki.eeros.org/getting_started/install). Follow the respective installation instructions depending on whether you want to use EEROS on your host, the beaglebone blue or the CB20 board.
 
 # How to use the template project
+
+**NOTE: the template project does not support the cb20 board yet, even though the description already mentions it!**
 
 1. Clone the [eeros build scripts](https://github.com/eeros-project/eeros-build-scripts)
 
     `git clone https://github.com/eeros-project/eeros-build-scripts.git YOUR_PROJECT_NAME`
 
-2. Change into the new directory and checkout the Beaglebone blue branch with
+2. Change into the new directory. Depending on whether you want to use EEROS on your host, the beaglebone blue or the CB20 board checkout the respective branch with
 
-    `git checkout sdk_bbb`
+    ```
+    git checkout host
+    git checkout sdk_bbb
+    git checkout sdk_cb20
+    ```
 
 3. Modify the following lines in the file config.sh.in
 
     ```
     custom_application_name=YOUR_PROJECT_NAME
     custom_application_git_remote_address=https://github.com/eeros-project/eeros-template-project-bbblue.git
-    custom_application_git_version=bbblue
+    custom_application_git_version=host/bbblue/cb20     # choose the correct one for your application
     ```
 
 4. Fetch the code of the application by executing the `clone.sh` script from within the main project folder
@@ -48,7 +52,7 @@ In order to be able to compile your project on the host, you need to have the [E
 
     `git remote set-url origin your/new/repo/url/YOUR_PROJECT_NAME.git`
 
-    Change the remote address in the config.sh.in to your new address.
+    Change the remote address in the config.sh.in to your new address and the version to master.
 
 6. Alternatively delete the .git folder (**do NOT do this if you did step 3!**):
 
@@ -66,14 +70,14 @@ In order to be able to compile your project on the host, you need to have the [E
 
     `./make.sh`
 
-9. Deploy your project to the target
+9. If you are working on the beaglebone blue or CB20, deploy your project to the target
 
-    - Connect the Beaglebone Blue Board to the host
+    - Connect the Beaglebone Blue/CB20 Board to the host
 
     - Execute the `deploy.sh` script from within the main project folder
 
         `./deploy.sh`
 
-10. SSH into the target and run the application.
+10. If you are working on the beaglebone blue or CB20, SSH into the target and run the application. Otherwhise directly run the application on the host.
 
 11. Start working on your own project by modifying the code, creating new blocks and sequences, ...
