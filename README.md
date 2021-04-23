@@ -28,7 +28,11 @@ In order to be able to compile your project on the host, you need to have the [E
 
     `git clone https://github.com/eeros-project/eeros-build-scripts.git YOUR_PROJECT_NAME`
 
-2. Modify the following lines in the file config.sh.in
+2. Change into the new directory and checkout the Beaglebone blue branch with
+
+    `git checkout sdk_bbb`
+
+3. Modify the following lines in the file config.sh.in
 
     ```
     custom_application_name=YOUR_PROJECT_NAME
@@ -36,21 +40,21 @@ In order to be able to compile your project on the host, you need to have the [E
     custom_application_git_version=bbblue
     ```
 
-3. Fetch the code of the application by executing the `clone.sh` script from within the main project folder
+4. Fetch the code of the application by executing the `clone.sh` script from within the main project folder
 
     `./clone.sh`
 
-4. Optionally create a new git repository and change the remote URL of the origin:
+5. Optionally create a new git repository and change the remote URL of the origin:
 
     `git remote set-url origin your/new/repo/url/YOUR_PROJECT_NAME.git`
 
     Change the remote address in the config.sh.in to your new address.
 
-5. Alternatively delete the .git folder (**do NOT do this if you did step 3!**):
+6. Alternatively delete the .git folder (**do NOT do this if you did step 3!**):
 
     `rm -rf .git`
 
-6. Replace `template_project` with `YOUR_PROJECT_NAME` in the following files and folders:
+7. Replace `template_project` with `YOUR_PROJECT_NAME` in the following files and folders:
 
     - Folder `template_project` in `main project folder`
 
@@ -58,11 +62,11 @@ In order to be able to compile your project on the host, you need to have the [E
 
     - File `CMakeLists.txt`, line `project(template_project)`
 
-7. Compile the project by executing the `make.sh` script from within the main project folder
+8. Compile the project by executing the `make.sh` script from within the main project folder
 
     `./make.sh`
 
-8. Deploy your project to the target
+9. Deploy your project to the target
 
     - Connect the Beaglebone Blue Board to the host
 
@@ -70,6 +74,6 @@ In order to be able to compile your project on the host, you need to have the [E
 
         `./deploy.sh`
 
-9. SSH into the target and run the application.
+10. SSH into the target and run the application.
 
-10. Start working on your own project by modifying the code, creating new blocks and sequences, ...
+11. Start working on your own project by modifying the code, creating new blocks and sequences, ...
