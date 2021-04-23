@@ -1,3 +1,0 @@
-./build-armhf/template_project/template_project
-./build-armhf/template_project/HwConfigBBBlue.json
-
