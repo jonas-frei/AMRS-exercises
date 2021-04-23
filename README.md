@@ -16,7 +16,7 @@ Main project folder
 | |HWConfigBBBlue.json
 ```
 
-The main project folder contains the [eeros build scripts](https://github.com/eeros-project/eeros-build-scripts), as well as the folder template_project. In the folder template_project is all the code and the CMakeLists.txt file, which is needed to compile the application. *.cpp files are stored in the src folder and *.hpp files in the inc folder. In the config folder is the HWConfigBBBlue.json file, which is used to interface with the hardware through the HAL.
+The main project folder contains all the code and the CMakeLists.txt file, which is needed to compile the application. *.cpp files are stored in the src folder and *.hpp files in the inc folder. In the config folder is the HWConfigBBBlue.json file, which is used to interface with the hardware through the HAL.
 
 # Prerequisits
 
