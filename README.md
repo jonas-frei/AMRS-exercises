@@ -33,6 +33,7 @@ In order to be able to compile your project on the host, you need to have the [E
     ```
     custom_application_name=YOUR_PROJECT_NAME
     custom_application_git_remote_address=https://github.com/eeros-project/eeros-template-project-bbblue.git
+    custom_application_git_version=bbblue
     ```
 
 3. Fetch the code of the application by executing the `clone.sh` script from within the main project folder
