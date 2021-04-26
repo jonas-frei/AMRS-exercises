@@ -65,6 +65,10 @@ In order to be able to compile your project, you need to have [EEROS installed](
     - Add the remote URL of your newly created GitHub repository as origin (make sure that you are in the subdirectory `YOUR_PROJECT_NAME/YOUR_PROJECT_NAME` before you execute this step):
 
         `git remote add origin YOUR_GIT_URL`
+        
+    - Push the local repository to the remote with
+
+        `git push`
 
     - Change back into the main folder with `cd ..`
 
