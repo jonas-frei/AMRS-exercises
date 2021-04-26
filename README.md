@@ -46,8 +46,8 @@ In order to be able to compile your project, you need to have [EEROS installed](
 3. Modify the following lines in the file `config.sh.in`
 
     ```
-    custom_application_name=**YOUR_PROJECT_NAME**
-    custom_application_git_remote_address=**https://github.com/eeros-project/eeros-template-project-bbblue.git**
+    custom_application_name=YOUR_PROJECT_NAME
+    custom_application_git_remote_address=https://github.com/eeros-project/eeros-template-project.git
     ```
 
 4. Fetch the code of the template project by executing the `clone.sh` script
@@ -56,26 +56,28 @@ In order to be able to compile your project, you need to have [EEROS installed](
     
     This will create a new directory inside the `YOUR_PROJECT_NAME` directory, which is also called `YOUR_PROJECT_NAME`.
 
-5. If you want to keep working with GitHub, create a new GitHub repository and:
+5. Do the following steps if you want to keep working with GitHub:
+
+    - Create a new GitHub repository. *Note: in the following replace YOUR_GIT_URL with the URL of your newly created repository on GitHub*
 
     - Change into the cloned project directory with `cd YOUR_PROJECT_NAME`
     
-    - Change the remote URL of the origin (**make sure that you are in the subdirectory `YOUR_PROJECT_NAME/YOUR_PROJECT_NAME` before you execute this step**):
+    - Add the remote URL of your newly created GitHub repository as origin (make sure that you are in the subdirectory `YOUR_PROJECT_NAME/YOUR_PROJECT_NAME` before you execute this step):
 
-        `git remote set-url origin **YOUR_GIT_URL**`
+        `git remote add origin YOUR_GIT_URL`
 
-    - Change back into the main follder with `cd ..` and change the remote address in the config.sh.in to your new remote address
+    - Change back into the main folder with `cd ..`
 
-        `custom_application_git_remote_address=**YOUR_GIT_URL**`
+6. Replace `template_project` with `YOUR_PROJECT_NAME` in the file `YOUR_PROJECT_NAME/CMakeLists.txt`, line `project(template_project)`. To open the file use
 
-6. Replace `template_project` with `YOUR_PROJECT_NAME` in the file `CMakeLists.txt`, line `project(template_project)`
+    `gedit YOUR_PROJECT_NAME/CMakeLists.txt`
 
 7. Compile the project by executing the `make.sh` script from within the main project folder
 
     `./make.sh`
 
-8. If you are working on the beaglebone blue or CB20, deploy your project to the target. As a guideline look at the chapter [Deploying](https://wiki.eeros.org/getting_started/deploy) on the EEROS wiki 
+8. If you are working on the beaglebone blue or CB20, deploy your project to the target. As a guideline look at the chapter [Deploying](https://wiki.eeros.org/getting_started/deploy) on the EEROS wiki
 
 9. If you are working on the beaglebone blue or CB20, SSH into the target and run the application. Otherwhise directly run the application on the host
 
-10. Start working on your own project by modifying the code, creating new blocks and sequences, ...
+10. Open the project folder in an IDE like VS Code and start working on your own project by modifying the code, creating new blocks and sequences, ...
