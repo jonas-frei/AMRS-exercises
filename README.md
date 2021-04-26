@@ -50,7 +50,7 @@ In order to be able to compile your project, you need to have [EEROS installed](
     custom_application_git_remote_address=https://github.com/eeros-project/eeros-template-project-bbblue.git
     ```
 
-4. Fetch the code of the application by executing the `clone.sh` script
+4. Fetch the code of the template project by executing the `clone.sh` script
 
     `./clone.sh`
     
