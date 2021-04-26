@@ -30,7 +30,7 @@ In order to be able to compile your project, you need to have [EEROS installed](
 
 # How to use the template project
 
-*Note: in the following replace YOUR_PROJECT_NAME with whatever you want to name your project*
+*Note: in the following replace `YOUR_PROJECT_NAME` with whatever you want to name your project*
 
 1. Clone the [eeros build scripts](https://github.com/eeros-project/eeros-build-scripts)
 
