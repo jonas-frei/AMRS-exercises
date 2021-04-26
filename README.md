@@ -58,7 +58,7 @@ In order to be able to compile your project, you need to have [EEROS installed](
 
 5. Do the following steps if you want to keep working with GitHub:
 
-    - Create a new GitHub repository. *Note: in the following replace YOUR_GIT_URL with the URL of your newly created repository on GitHub*
+    - Create a new GitHub repository and name it `YOUR_PROJECT_NAME`. *Note: in the following replace YOUR_GIT_URL with the URL of your newly created repository on GitHub*
 
     - Change into the cloned project directory with `cd YOUR_PROJECT_NAME`
     
