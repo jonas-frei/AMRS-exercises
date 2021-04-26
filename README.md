@@ -2,9 +2,8 @@
 
 Basic EEROS project with a minimal control system, safety system and sequencer implementation. This may serve as a template to start working on a new project.
 
-# Overview
+# Folder structure overview
 
-**Folder structure**
 ```
 YOUR_PROJECT_NAME
 |CMakeList.txt
@@ -65,7 +64,7 @@ In order to be able to compile your project, you need to have [EEROS installed](
 
         `git remote set-url origin your/new/repo/url/YOUR_PROJECT_NAME.git`
 
-    - Change back into the main follder with `cd ..` and change the remote address in the config.sh.in to your new remote address.
+    - Change back into the main follder with `cd ..` and change the remote address in the config.sh.in to your new remote address
 
 6. Replace `template_project` with `YOUR_PROJECT_NAME` in the following file `CMakeLists.txt`, line `project(template_project)`
 
@@ -75,6 +74,6 @@ In order to be able to compile your project, you need to have [EEROS installed](
 
 8. If you are working on the beaglebone blue or CB20, deploy your project to the target. As a guideline look at the chapter [Deploying](https://wiki.eeros.org/getting_started/deploy) on the EEROS wiki 
 
-9. If you are working on the beaglebone blue or CB20, SSH into the target and run the application. Otherwhise directly run the application on the host.
+9. If you are working on the beaglebone blue or CB20, SSH into the target and run the application. Otherwhise directly run the application on the host
 
 10. Start working on your own project by modifying the code, creating new blocks and sequences, ...
