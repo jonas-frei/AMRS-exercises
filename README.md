@@ -35,7 +35,7 @@ In order to be able to compile your project, you need to have [EEROS installed](
 
     `git clone https://github.com/eeros-project/eeros-build-scripts.git YOUR_PROJECT_NAME`
 
-2. Change into the new directory. Depending on whether you want to use EEROS on your host, the beaglebone blue or the CB20 board checkout the respective branch with
+2. Change into the new directory with `cd YOUR_PROJECT_NAME`. Depending on whether you want to use EEROS on your host, the beaglebone blue or the CB20 board checkout the respective branch with
 
     ```
     git checkout host
@@ -43,30 +43,32 @@ In order to be able to compile your project, you need to have [EEROS installed](
     git checkout sdk_cb20
     ```
 
-3. Modify the following lines in the file config.sh.in
+3. Modify the following lines in the file `config.sh.in`
 
     ```
-    custom_application_name=YOUR_PROJECT_NAME
-    custom_application_git_remote_address=https://github.com/eeros-project/eeros-template-project-bbblue.git
+    custom_application_name=**YOUR_PROJECT_NAME**
+    custom_application_git_remote_address=**https://github.com/eeros-project/eeros-template-project-bbblue.git**
     ```
 
 4. Fetch the code of the template project by executing the `clone.sh` script
 
     `./clone.sh`
     
-    This will create a new directory inside the `YOUR_PROJECT_NAME` directory, which is also called `YOUR_PROJECT_NAME`
+    This will create a new directory inside the `YOUR_PROJECT_NAME` directory, which is also called `YOUR_PROJECT_NAME`.
 
-5. If you want to keep working with git, create a new git repository and:
+5. If you want to keep working with GitHub, create a new GitHub repository and:
 
     - Change into the cloned project directory with `cd YOUR_PROJECT_NAME`
     
     - Change the remote URL of the origin (**make sure that you are in the subdirectory `YOUR_PROJECT_NAME/YOUR_PROJECT_NAME` before you execute this step**):
 
-        `git remote set-url origin your/new/repo/url/YOUR_PROJECT_NAME.git`
+        `git remote set-url origin **YOUR_GIT_URL**`
 
     - Change back into the main follder with `cd ..` and change the remote address in the config.sh.in to your new remote address
 
-6. Replace `template_project` with `YOUR_PROJECT_NAME` in the following file `CMakeLists.txt`, line `project(template_project)`
+        `custom_application_git_remote_address=**YOUR_GIT_URL**`
+
+6. Replace `template_project` with `YOUR_PROJECT_NAME` in the file `CMakeLists.txt`, line `project(template_project)`
 
 7. Compile the project by executing the `make.sh` script from within the main project folder
 
