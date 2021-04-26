@@ -63,7 +63,7 @@ In order to be able to compile your project, you need to have [EEROS installed](
     
     - Change the remote URL of the origin (**make sure that you are in the subdirectory `YOUR_PROJECT_NAME/YOUR_PROJECT_NAME` before you execute this step**):
 
-    `git remote set-url origin your/new/repo/url/YOUR_PROJECT_NAME.git`
+        `git remote set-url origin your/new/repo/url/YOUR_PROJECT_NAME.git`
 
     - Change back into the main follder with `cd ..` and change the remote address in the config.sh.in to your new remote address.
 
