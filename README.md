@@ -1,69 +1,79 @@
 # Description
 
-Basic EEROS project for the Beaglebone Blue with a minimal control system, safety system and sequencer. This serves as a template to start working on a new project.
+Basic EEROS project with a minimal control system, safety system and sequencer implementation. This may serve as a template to start working on a new project.
 
-# Overview
+# Folder structure overview
 
-**Folder structure**
 ```
-Main project folder
-|EEROS build scripts (clean.sh, clone.sh, config.sh.in, deploy.sh, deploy.txt, make.sh)
-|-template_project
-| |CMakeList.txt
-| |-src
-| | |*.cpp
-| |-include
-| | |*.hpp
-| |-config
-| | |HWConfigBBBlue.json
+YOUR_PROJECT_NAME
+|CMakeList.txt
+|-config
+| |*.json
+|-inc
+| |*.hpp
+|-src
+| |*.cpp
 ```
 
-The main project folder contains the [eeros build scripts](https://github.com/eeros-project/eeros-build-scripts), as well as the folder template_project. In the folder template_project is all the code and the CMakeLists.txt file, which is needed to compile the application. *.cpp files are stored in the src folder and *.hpp files in the inc folder. In the config folder is the HWConfigBBBlue.json file, which is used to interface with the hardware through the HAL.
+The main project folder contains the CMakeLists.txt file, which is needed to compile the application, as well as the folders config, inc and src.
+
+In the config folder *.json files are stored. These files are needed to interface with the hardware through the HAL and are therefore hardware specific. *Note: at the moment only the hardware config file for the beaglebone blue is provided*
+
+In the inc folder *.hpp files are stored. Declare your functions and classes in these header files. (Custom) blocks, sequences and steps can also be directly defined in these files.
+
+In the src folder *.cpp files are stored. In there define your functions and classes previously declared but not yet defined in the header files.
 
 # Prerequisits
 
-In order to be able to compile your project on the host, you need to have the [EEROS SDK installed](https://wiki.eeros.org/getting_started/install/use_on_bbb).
+In order to be able to compile your project, you need to have [EEROS installed](https://wiki.eeros.org/getting_started/install). Follow the respective installation instructions depending on whether you want to use EEROS on your host, the beaglebone blue or the CB20 board.
 
 # How to use the template project
 
-1. Change into the directory where you want to safe your project and clone the repository:
+*Note: in the following replace `YOUR_PROJECT_NAME` with whatever you want to name your project*
 
-    `git clone https://gitlab.ost.ch/ost-robotics-buchs/eeros-template-project.git YOUR_PROJECT_NAME`
+1. Clone the [eeros build scripts](https://github.com/eeros-project/eeros-build-scripts)
 
-2. Change into your new project folder:
+    `git clone https://github.com/eeros-project/eeros-build-scripts.git YOUR_PROJECT_NAME`
 
-    `cd YOUR_PROJECT_NAME`
+2. Change into the new directory. Depending on whether you want to use EEROS on your host, the beaglebone blue or the CB20 board checkout the respective branch with
 
-3. Optionally create a new git repository and change the remote URL of the origin:
+    ```
+    git checkout host
+    git checkout sdk_bbb
+    git checkout sdk_cb20
+    ```
 
-    `git remote set-url origin your/new/repo/url/YOUR_PROJECT_NAME.git`
+3. Modify the following lines in the file config.sh.in
 
-4. Alternatively delete the .git folder (**do NOT do this if you did step 3!**):
+    ```
+    custom_application_name=YOUR_PROJECT_NAME
+    custom_application_git_remote_address=https://github.com/eeros-project/eeros-template-project-bbblue.git
+    ```
 
-    `rm -rf .git`
+4. Fetch the code of the template project by executing the `clone.sh` script
 
-5. Replace `template_project` with `YOUR_PROJECT_NAME` in the following files and folders:
-
-    - Folder `template_project` in `main project folder`
+    `./clone.sh`
     
-    - File `config.sh.in`, line `custom_application_name=template_project`
+    This will create a new directory inside the `YOUR_PROJECT_NAME` directory, which is also called `YOUR_PROJECT_NAME`
 
-    - File `deploy.txt`, line `./build-armhf/template_project/template_project`
+5. If you want to keep working with git, create a new git repository and:
 
-    - File `CMakeLists.txt`, line `project(template_project)`
+    - Change into the cloned project directory with `cd YOUR_PROJECT_NAME`
+    
+    - Change the remote URL of the origin (**make sure that you are in the subdirectory `YOUR_PROJECT_NAME/YOUR_PROJECT_NAME` before you execute this step**):
 
-6. Compile the project be executing the `make.sh` script from within the main project folder
+        `git remote set-url origin your/new/repo/url/YOUR_PROJECT_NAME.git`
+
+    - Change back into the main follder with `cd ..` and change the remote address in the config.sh.in to your new remote address
+
+6. Replace `template_project` with `YOUR_PROJECT_NAME` in the following file `CMakeLists.txt`, line `project(template_project)`
+
+7. Compile the project by executing the `make.sh` script from within the main project folder
 
     `./make.sh`
 
-7. Deploy your project to the target
+8. If you are working on the beaglebone blue or CB20, deploy your project to the target. As a guideline look at the chapter [Deploying](https://wiki.eeros.org/getting_started/deploy) on the EEROS wiki 
 
-    - Connect the Beaglebone Blue Board to the host
+9. If you are working on the beaglebone blue or CB20, SSH into the target and run the application. Otherwhise directly run the application on the host
 
-    - Execute the `deploy.sh` script from within the main project folder
-
-        `./deploy.sh`
-
-8. SSH into the target and run the application.
-
-9. Start working on your own project by modifying the code, creating new blocks and sequences, ...
+10. Start working on your own project by modifying the code, creating new blocks and sequences, ...
