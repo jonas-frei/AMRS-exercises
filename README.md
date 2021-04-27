@@ -68,7 +68,7 @@ In order to be able to compile your project, you need to have [EEROS installed](
         
     - Push the local repository to the remote with
 
-        `git push`
+        `git push -u origin master`
 
     - Change back into the main folder with `cd ..`
 
