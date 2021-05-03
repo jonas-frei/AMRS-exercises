@@ -14,7 +14,7 @@ public:
     eeros::safety::SafetyEvent doSystemOff;
     eeros::safety::SafetyEvent doSystemOn;
 
-    // Name all levels
+    // Defina all possible levels
     eeros::safety::SafetyLevel slSystemOff;
     eeros::safety::SafetyLevel slSystemOn;
 

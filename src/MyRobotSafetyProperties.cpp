@@ -11,17 +11,17 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
 {
     eeros::hal::HAL &hal = eeros::hal::HAL::instance();
 
-    // Declare critical outputs
+    // Declare and add critical outputs
     // ... = hal.getLogicOutput("...");
 
     // criticalOutputs = { ... };
 
-    // Declare critical inputs
+    // Declare and add critical inputs
     // ... = eeros::hal::HAL::instance().getLogicInput("...", ...);
 
     // criticalInputs = { ... };
 
-    // Add all safety levels
+    // Add all safety levels to the safety system
     addLevel(slSystemOff);
     addLevel(slSystemOn);
 
@@ -32,13 +32,13 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     // Add events to multiple safety levels
     // addEventToAllLevelsBetween(lowerLevel, upperLevel, event, targetLevel, kPublicEvent/kPrivateEvent);
 
-    // Define input states and events for all levels
+    // Define input actions for all levels
     // level.setInputActions({ ... });
 
-    // Define output states and events for all levels
+    // Define output actions for all levels
     // level.setOutputActions({ ... });
 
-    // Define and add level functions
+    // Define and add level actions
     slSystemOff.setLevelAction([&](SafetyContext *privateContext) {
         cs.timedomain.stop();
         eeros::Executor::stop();
@@ -51,6 +51,7 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     // Define entry level
     setEntryLevel(slSystemOff);
 
+    // Define exit function
     exitFunction = ([&](SafetyContext *privateContext) {
         privateContext->triggerEvent(doSystemOff);
     });
