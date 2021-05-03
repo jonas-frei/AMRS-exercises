@@ -75,6 +75,7 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     // Define and add level actions
     slSystemOff.setLevelAction([&](SafetyContext *privateContext) {
         eeros::Executor::stop();
+        eeros::sequencer::Sequencer::instance().abort();
     });
 
     slShuttingDown.setLevelAction([&](SafetyContext *privateContext) {
@@ -95,6 +96,8 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     slEmergency.setLevelAction([&, dt](SafetyContext *privateContext) {
         if (slEmergency.getNofActivations()*dt == 1)  // wait 1 sec
         {
+            static int counter = 0;
+            if (counter++ == 3) privateContext->triggerEvent(abort); // abort after entering emergency sequence 4 times
             privateContext->triggerEvent(resetEmergency);
         }
     });

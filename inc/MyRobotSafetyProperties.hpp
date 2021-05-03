@@ -3,6 +3,7 @@
 
 #include <eeros/safety/SafetyProperties.hpp>
 #include <eeros/hal/HAL.hpp>
+#include <eeros/sequencer/Sequencer.hpp>
 #include "ControlSystem.hpp"
 
 class MyRobotSafetyProperties : public eeros::safety::SafetyProperties
