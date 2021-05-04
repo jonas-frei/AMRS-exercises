@@ -7,9 +7,9 @@ ControlSystem::ControlSystem(double dt)
       i1_inv(1.0 / 33.0), i2_inv(1.0 / 33.0),
       kM1_inv(1 / 8.44e-3), kM2_inv(1 / 8.44e-3),
       R1(8.0), R2(8.0),
+      qdMax1(21.3), qdMax2(21.3),
       i1(33.0), i2(33.0),
       kM1(8.44e-3), kM2(8.44e-3),
-      qdMax1(21.3), qdMax2(21.3),
       M1("motor1"), M2("motor2"),
       timedomain("Main time domain", dt, true)
 {
@@ -26,6 +26,16 @@ ControlSystem::ControlSystem(double dt)
     kM2_inv.setName("kM2_inv");
     R1.setName("R1");
     R2.setName("R2");
+    d1.setName("d1");
+    d2.setName("d2");
+    qdMax1.setName("qdMax1");
+    qdMax2.setName("qdMax2");
+    i1.setName("i1");
+    i2.setName("i2");
+    kM1.setName("kM1");
+    kM2.setName("kM2");
+    U1.setName("U1");
+    U2.setName("U2");
     M1.setName("M1");
     M2.setName("M2");
 
@@ -40,8 +50,19 @@ ControlSystem::ControlSystem(double dt)
     i2_inv.getOut().getSignal().setName("Motor 2 torque setpoint [Nm]");
     kM1_inv.getOut().getSignal().setName("Motor 1 setpoint current [A]");
     kM2_inv.getOut().getSignal().setName("Motor 2 setpoint current [A]");
-    R1.getOut().getSignal().setName("Motor 1 setpoint voltage [V]");
-    R2.getOut().getSignal().setName("Motor 2 setpoint voltage [V]");
+    R1.getOut().getSignal().setName("Motor 1 setpoint voltage from pd controller [V]");
+    R2.getOut().getSignal().setName("Motor 2 setpoint voltage from pd controller [V]");
+    d1.getOut().getSignal().setName("Output shaft velocity setpoint 1 [rad/s]");
+    d2.getOut().getSignal().setName("Output shaft velocity setpoint 2 [rad/s]");
+    qdMax1.getOut().getSignal().setName("Saturated output shaft velocity setpoint 1 [rad/s]");
+    qdMax2.getOut().getSignal().setName("Saturated output shaft velocity setpoint 2 [rad/s]");
+    i1.getOut().getSignal().setName("Motor 1 velocity setpoint [rad/s]");
+    i2.getOut().getSignal().setName("Motor 2 velocity setpoint [rad/s]");
+    kM1.getOut().getSignal().setName("Motor 1 setpoint voltage from feed forward [V]");
+    kM2.getOut().getSignal().setName("Motor 2 setpoint voltage from feed forward [V]");
+    U1.getOut().getSignal().setName("Motor 1 setpoint voltage [V]");
+    U2.getOut().getSignal().setName("Motor 2 setpoint voltage [V]");
+
 
     // Connect signals
     controller1.getIn(0).connect(E2.getOut());
