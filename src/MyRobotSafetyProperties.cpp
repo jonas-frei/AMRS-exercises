@@ -96,8 +96,6 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     slEmergency.setLevelAction([&, dt](SafetyContext *privateContext) {
         if (slEmergency.getNofActivations()*dt == 1)  // wait 1 sec
         {
-            static int counter = 0;
-            if (counter++ == 3) privateContext->triggerEvent(abort); // abort after entering emergency sequence 4 times
             privateContext->triggerEvent(resetEmergency);
         }
     });
@@ -116,7 +114,7 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     });
 
     slSystemMoving.setLevelAction([&](SafetyContext *privateContext) {
-        privateContext->triggerEvent(emergency);
+        
     });
 
     // Define entry level
