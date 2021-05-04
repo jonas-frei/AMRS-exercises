@@ -5,8 +5,10 @@
 #include <eeros/core/Executor.hpp>
 #include <eeros/control/PeripheralInput.hpp>
 #include "customBlocks/PD_controller.hpp"
+#include <eeros/control/D.hpp>
 #include <eeros/control/Gain.hpp>
 #include <eeros/control/Saturation.hpp>
+#include <eeros/control/Sum.hpp>
 #include <eeros/control/PeripheralOutput.hpp>
 
 using namespace eeros::control;
@@ -18,11 +20,12 @@ public:
 
     // Define Blocks
     PeripheralInput<> E1, E2;
-    PDController<> controller;
-    Gain<> i1_inv, kM1_inv, R1;
-    Saturation<> QMax1;
-    PeripheralOutput<> M1;
-
+    PDController<> controller1, controller2;
+    D<> d1, d2;
+    Gain<> i1, i2, kM1, kM2, i1_inv, i2_inv, kM1_inv, kM2_inv, R1, R2;
+    Saturation<> qdMax1, qdMax2, QMax1, QMax2;
+    PeripheralOutput<> M1, M2;
+    Sum<> U1, U2;
     TimeDomain timedomain;
 };
 
