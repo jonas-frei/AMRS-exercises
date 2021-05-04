@@ -17,8 +17,8 @@ public:
 
     // Define Blocks
     PeripheralInput<> E1, E2;
-    Gain<> scale1, i1, kM1;
-    Saturation<> qdMax1;
+    Gain<> scale1, i1_inv, kM1_inv, R1;
+    Saturation<> QMax1;
     PeripheralOutput<> M1;
 
     TimeDomain timedomain;
