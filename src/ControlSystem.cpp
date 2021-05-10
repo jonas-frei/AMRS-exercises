@@ -23,7 +23,6 @@ ControlSystem::ControlSystem(double dt)
     i_inv.setName("i_inv");
     kM_inv.setName("kM_inv");
     R.setName("R");
-    d.setName("d");
     qdMax.setName("qdMax");
     i.setName("i");
     kM.setName("kM");
@@ -37,12 +36,12 @@ ControlSystem::ControlSystem(double dt)
     E2.getOut().getSignal().setName("Encoder 2 position [rad]");
     E.getOut().getSignal().setName("Encoder positions [rad]");
     E_set.getOut().getSignal().setName("Switched encoder positions for controller setpoints [rad]");
-    controller.getOut().getSignal().setName("Output shaft torque setpoints [Nm]");
+    controller.getOut(0).getSignal().setName("Output shaft torque setpoints [Nm]");
+    controller.getOut(1).getSignal().setName("Output shaft velocity setpoints [rad/s]");
     QMax.getOut().getSignal().setName("Saturated output shaft torque setpoints [Nm]");
     i_inv.getOut().getSignal().setName("Motor torque setpoints [Nm]");
     kM_inv.getOut().getSignal().setName("Motor current setpoints [A]");
     R.getOut().getSignal().setName("Motor voltage setpoints from pd controller [V]");
-    d.getOut().getSignal().setName("Output shaft velocity setpoints [rad/s]");
     qdMax.getOut().getSignal().setName("Saturated output shaft velocity setpoints [rad/s]");
     i.getOut().getSignal().setName("Motor velocity setpoints [rad/s]");
     kM.getOut().getSignal().setName("Motor voltage setpoints from feed forward [V]");
@@ -57,12 +56,11 @@ ControlSystem::ControlSystem(double dt)
     E_set.getIn(1).connect(E1.getOut());
     controller.getIn(0).connect(E_set.getOut());
     controller.getIn(1).connect(E.getOut());
-    QMax.getIn().connect(controller.getOut());
+    QMax.getIn().connect(controller.getOut(0));
     i_inv.getIn().connect(QMax.getOut());
     kM_inv.getIn().connect(i_inv.getOut());
     R.getIn().connect(kM_inv.getOut());
-    d.getIn().connect(E.getOut());
-    qdMax.getIn().connect(d.getOut());
+    qdMax.getIn().connect(controller.getOut(1));
     i.getIn().connect(qdMax.getOut());
     kM.getIn().connect(i.getOut());
     U.getIn(0).connect(R.getOut());
@@ -81,7 +79,6 @@ ControlSystem::ControlSystem(double dt)
     timedomain.addBlock(i_inv);
     timedomain.addBlock(kM_inv);
     timedomain.addBlock(R);
-    timedomain.addBlock(d);
     timedomain.addBlock(qdMax);
     timedomain.addBlock(i);
     timedomain.addBlock(kM);

@@ -24,7 +24,6 @@ public:
     PeripheralInput<> E1, E2;
     Mux<2> E, E_set;
     PDController<eeros::math::Vector2> controller;
-    D<eeros::math::Vector2> d;
     Gain<eeros::math::Vector2> i, kM, i_inv, kM_inv, R;
     Saturation<eeros::math::Vector2> qdMax, QMax;
     Sum<2, eeros::math::Vector2> U;
