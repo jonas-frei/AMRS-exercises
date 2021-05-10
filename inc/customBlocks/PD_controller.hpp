@@ -5,6 +5,7 @@
 #include <eeros/control/Gain.hpp>
 #include <eeros/control/D.hpp>
 #include <eeros/control/Sum.hpp>
+#include <eeros/control/Output.hpp>
 
 using namespace eeros::control;
 
@@ -12,53 +13,86 @@ template <typename T = double>
 class PDController : public Block
 {
 public:
-    PDController(T Kp, T Kd, T M)
+    PDController(double Kp, double Kd, double M)
         : Kp(Kp), Kd(Kd), M(M)
     {
-        connectInputs();
+        init();
     }
 
-    PDController(T f_task, T D, T s, T M)
-        : Kp(f_task/s/D * f_task/s/D), Kd(2.0 * f_task/s), M(M)
+    PDController(double f_task, double D, double s, double M)
+        : Kp(f_task / s / D * f_task / s / D), Kd(2.0 * f_task / s), M(M)
     {
-        connectInputs();
+        init();
     }
 
-    virtual Input<T> &getIn(int index)
+    Input<T> &getIn(uint8_t index)
     {
-        return e.getIn(index);
+        if (index >= 2)
+            throw eeros::Fault("index out of bounds in block '" + this->getName() + "'");
+        return in[index].getIn();
+        ;
     }
 
-    virtual Output<T> &getOut()
+    Output<T> &getOut(uint8_t index)
     {
-        return M.getOut();
+        if (index == 0)
+            return M.getOut();
+        else if (index == 1)
+            return d2.getOut();
+        else
+            throw eeros::Fault("index out of bounds in block '" + this->getName() + "'");
     }
 
-    virtual void run()
+    void run()
     {
-        e.run();
+        in[0].run();
+        in[1].run();
+        sum1.run();
         Kp.run();
-        d.run();
+        d1.run();
         Kd.run();
-        qdd.run();
+        sum2.run();
         M.run();
+        d2.run();
     }
 
 protected:
-    Sum<2, T> e, qdd;
-    Gain<T> Kp, Kd, M;
-    D<T> d;
+    Sum<2, T> sum1, sum2;
+    Gain<T> Kp, Kd, M, in[2];
+    D<T> d1, d2;
 
 private:
-    void connectInputs(void)
+    void init(void)
     {
-        e.negateInput(1);
-        Kp.getIn().connect(e.getOut());
-        d.getIn().connect(e.getOut());
-        Kd.getIn().connect(d.getOut());
-        qdd.getIn(0).connect(Kp.getOut());
-        qdd.getIn(1).connect(Kd.getOut());
-        M.getIn().connect(qdd.getOut());
+        // Name all blocks
+        sum1.setName("sum1");
+        sum2.setName("sum2");
+        Kp.setName("Kp");
+        Kd.setName("Kd");
+        M.setName("M");
+        in[0].setName("in0");
+        in[1].setName("in1");
+        d1.setName("d1");
+        d2.setName("d2");
+
+        // Name all signals
+        sum1.getOut().getSignal().setName("Control error [rad]");
+        sum2.getOut().getSignal().setName("Acceleration setpoint [rad/s²]");
+        Kp.getOut().getSignal().setName("Proportional gain times the control error [rad/s²]");
+        Kd.getOut().getSignal().setName("Derrivative gain times the control error [rad/s²]");
+        d1.getOut().getSignal().setName("Derrivative of the control error [rad/s]");
+
+        // Connect signals
+        sum1.getIn(0).connect(in[0].getOut());
+        sum1.getIn(1).connect(in[1].getOut());
+        sum1.negateInput(1);
+        Kp.getIn().connect(sum1.getOut());
+        d1.getIn().connect(sum1.getOut());
+        Kd.getIn().connect(d1.getOut());
+        sum2.getIn(0).connect(Kp.getOut());
+        sum2.getIn(1).connect(Kd.getOut());
+        M.getIn().connect(sum2.getOut());
+        d2.getIn().connect(in[1].getOut());
     }
 };
 

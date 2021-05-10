@@ -26,8 +26,6 @@ ControlSystem::ControlSystem(double dt)
     kM2_inv.setName("kM2_inv");
     R1.setName("R1");
     R2.setName("R2");
-    d1.setName("d1");
-    d2.setName("d2");
     qdMax1.setName("qdMax1");
     qdMax2.setName("qdMax2");
     i1.setName("i1");
@@ -42,8 +40,8 @@ ControlSystem::ControlSystem(double dt)
     // Name all signals
     E1.getOut().getSignal().setName("Position encoder 1 [rad]");
     E2.getOut().getSignal().setName("Position encoder 2 [rad]");
-    controller1.getOut().getSignal().setName("Output shaft torque setpoint 1 [Nm]");
-    controller2.getOut().getSignal().setName("Output shaft torque setpoint 2 [Nm]");
+    controller1.getOut(0).getSignal().setName("Output shaft torque setpoint 1 [Nm]");
+    controller2.getOut(0).getSignal().setName("Output shaft torque setpoint 2 [Nm]");
     QMax1.getOut().getSignal().setName("Saturated output shaft torque setpoint 1 [Nm]");
     QMax2.getOut().getSignal().setName("Saturated output shaft torque setpoint 2 [Nm]");
     i1_inv.getOut().getSignal().setName("Motor 1 torque setpoint [Nm]");
@@ -52,8 +50,8 @@ ControlSystem::ControlSystem(double dt)
     kM2_inv.getOut().getSignal().setName("Motor 2 setpoint current [A]");
     R1.getOut().getSignal().setName("Motor 1 setpoint voltage from pd controller [V]");
     R2.getOut().getSignal().setName("Motor 2 setpoint voltage from pd controller [V]");
-    d1.getOut().getSignal().setName("Output shaft velocity setpoint 1 [rad/s]");
-    d2.getOut().getSignal().setName("Output shaft velocity setpoint 2 [rad/s]");
+    controller1.getOut(1).getSignal().setName("Output shaft velocity setpoint 1 [rad/s]");
+    controller2.getOut(1).getSignal().setName("Output shaft velocity setpoint 2 [rad/s]");
     qdMax1.getOut().getSignal().setName("Saturated output shaft velocity setpoint 1 [rad/s]");
     qdMax2.getOut().getSignal().setName("Saturated output shaft velocity setpoint 2 [rad/s]");
     i1.getOut().getSignal().setName("Motor 1 velocity setpoint [rad/s]");
@@ -66,12 +64,11 @@ ControlSystem::ControlSystem(double dt)
     // Connect signals
     controller1.getIn(0).connect(E2.getOut());
     controller1.getIn(1).connect(E1.getOut());
-    QMax1.getIn().connect(controller1.getOut());
+    QMax1.getIn().connect(controller1.getOut(0));
     i1_inv.getIn().connect(QMax1.getOut());
     kM1_inv.getIn().connect(i1_inv.getOut());
     R1.getIn().connect(kM1_inv.getOut());
-    d1.getIn().connect(E1.getOut());
-    qdMax1.getIn().connect(d1.getOut());
+    qdMax1.getIn().connect(controller1.getOut(1));
     i1.getIn().connect(qdMax1.getOut());
     kM1.getIn().connect(i1.getOut());
     U1.getIn(0).connect(R1.getOut());
@@ -80,12 +77,11 @@ ControlSystem::ControlSystem(double dt)
 
     controller2.getIn(0).connect(E1.getOut());
     controller2.getIn(1).connect(E2.getOut());
-    QMax2.getIn().connect(controller2.getOut());
+    QMax2.getIn().connect(controller2.getOut(0));
     i2_inv.getIn().connect(QMax2.getOut());
     kM2_inv.getIn().connect(i2_inv.getOut());
     R2.getIn().connect(kM2_inv.getOut());
-    d2.getIn().connect(E2.getOut());
-    qdMax2.getIn().connect(d2.getOut());
+    qdMax2.getIn().connect(controller2.getOut(1));
     i2.getIn().connect(qdMax2.getOut());
     kM2.getIn().connect(i2.getOut());
     U2.getIn(0).connect(R2.getOut());
@@ -105,8 +101,6 @@ ControlSystem::ControlSystem(double dt)
     timedomain.addBlock(kM2_inv);
     timedomain.addBlock(R1);
     timedomain.addBlock(R2);
-    timedomain.addBlock(d1);
-    timedomain.addBlock(d2);
     timedomain.addBlock(qdMax1);
     timedomain.addBlock(qdMax2);
     timedomain.addBlock(i1);
