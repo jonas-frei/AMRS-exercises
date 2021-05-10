@@ -12,13 +12,13 @@ template <typename T = double>
 class PDController : public Block
 {
 public:
-    PDController(T Kp, T Kd, T M)
+    PDController(double Kp, double Kd, double M)
         : Kp(Kp), Kd(Kd), M(M)
     {
         connectInputs();
     }
 
-    PDController(T f_task, T D, T s, T M)
+    PDController(double f_task, double D, double s, double M)
         : Kp(f_task/s/D * f_task/s/D), Kd(2.0 * f_task/s), M(M)
     {
         connectInputs();

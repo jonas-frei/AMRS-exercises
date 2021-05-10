@@ -2,120 +2,91 @@
 
 ControlSystem::ControlSystem(double dt)
     : E1("enc1"), E2("enc2"),
-      controller1(1.0 / dt, 0.7, 4.4, 6.8e-8 * 33.0 * 33.0), controller2(1.0 / dt, 0.7, 4.4, 6.8e-8 * 33.0 * 33.0),
-      QMax1(0.03), QMax2(0.03),
-      i1_inv(1.0 / 33.0), i2_inv(1.0 / 33.0),
-      kM1_inv(1 / 8.44e-3), kM2_inv(1 / 8.44e-3),
-      R1(8.0), R2(8.0),
-      qdMax1(21.3), qdMax2(21.3),
-      i1(33.0), i2(33.0),
-      kM1(8.44e-3), kM2(8.44e-3),
+      controller(1.0 / dt, 0.7, 4.4, 6.8e-8 * 33.0 * 33.0),
+      QMax(0.03),
+      i_inv(1.0 / 33.0),
+      kM_inv(1 / 8.44e-3),
+      R(8.0),
+      qdMax(21.3),
+      i(33.0),
+      kM(8.44e-3),
       M1("motor1"), M2("motor2"),
       timedomain("Main time domain", dt, true)
 {
     // Name all blocks
     E1.setName("E1");
     E2.setName("E2");
-    controller1.setName("controller1");
-    controller2.setName("controller2");
-    QMax1.setName("QMax1");
-    QMax2.setName("QMax2");
-    i1_inv.setName("i1_inv");
-    i2_inv.setName("i2_inv");
-    kM1_inv.setName("kM1_inv");
-    kM2_inv.setName("kM2_inv");
-    R1.setName("R1");
-    R2.setName("R2");
-    d1.setName("d1");
-    d2.setName("d2");
-    qdMax1.setName("qdMax1");
-    qdMax2.setName("qdMax2");
-    i1.setName("i1");
-    i2.setName("i2");
-    kM1.setName("kM1");
-    kM2.setName("kM2");
-    U1.setName("U1");
-    U2.setName("U2");
+    E.setName("E");
+    E_set.setName("E_set");
+    controller.setName("controller");
+    QMax.setName("QMax");
+    i_inv.setName("i_inv");
+    kM_inv.setName("kM_inv");
+    R.setName("R");
+    d.setName("d");
+    qdMax.setName("qdMax");
+    i.setName("i");
+    kM.setName("kM");
+    U.setName("U");
+    M.setName("M");
     M1.setName("M1");
     M2.setName("M2");
 
     // Name all signals
-    E1.getOut().getSignal().setName("Position encoder 1 [rad]");
-    E2.getOut().getSignal().setName("Position encoder 2 [rad]");
-    controller1.getOut().getSignal().setName("Output shaft torque setpoint 1 [Nm]");
-    controller2.getOut().getSignal().setName("Output shaft torque setpoint 2 [Nm]");
-    QMax1.getOut().getSignal().setName("Saturated output shaft torque setpoint 1 [Nm]");
-    QMax2.getOut().getSignal().setName("Saturated output shaft torque setpoint 2 [Nm]");
-    i1_inv.getOut().getSignal().setName("Motor 1 torque setpoint [Nm]");
-    i2_inv.getOut().getSignal().setName("Motor 2 torque setpoint [Nm]");
-    kM1_inv.getOut().getSignal().setName("Motor 1 setpoint current [A]");
-    kM2_inv.getOut().getSignal().setName("Motor 2 setpoint current [A]");
-    R1.getOut().getSignal().setName("Motor 1 setpoint voltage from pd controller [V]");
-    R2.getOut().getSignal().setName("Motor 2 setpoint voltage from pd controller [V]");
-    d1.getOut().getSignal().setName("Output shaft velocity setpoint 1 [rad/s]");
-    d2.getOut().getSignal().setName("Output shaft velocity setpoint 2 [rad/s]");
-    qdMax1.getOut().getSignal().setName("Saturated output shaft velocity setpoint 1 [rad/s]");
-    qdMax2.getOut().getSignal().setName("Saturated output shaft velocity setpoint 2 [rad/s]");
-    i1.getOut().getSignal().setName("Motor 1 velocity setpoint [rad/s]");
-    i2.getOut().getSignal().setName("Motor 2 velocity setpoint [rad/s]");
-    kM1.getOut().getSignal().setName("Motor 1 setpoint voltage from feed forward [V]");
-    kM2.getOut().getSignal().setName("Motor 2 setpoint voltage from feed forward [V]");
-    U1.getOut().getSignal().setName("Motor 1 setpoint voltage [V]");
-    U2.getOut().getSignal().setName("Motor 2 setpoint voltage [V]");
-
+    E1.getOut().getSignal().setName("Encoder 1 position [rad]");
+    E2.getOut().getSignal().setName("Encoder 2 position [rad]");
+    E.getOut().getSignal().setName("Encoder positions [rad]");
+    E_set.getOut().getSignal().setName("Switched encoder positions for controller setpoints [rad]");
+    controller.getOut().getSignal().setName("Output shaft torque setpoints [Nm]");
+    QMax.getOut().getSignal().setName("Saturated output shaft torque setpoints [Nm]");
+    i_inv.getOut().getSignal().setName("Motor torque setpoints [Nm]");
+    kM_inv.getOut().getSignal().setName("Motor current setpoints [A]");
+    R.getOut().getSignal().setName("Motor voltage setpoints from pd controller [V]");
+    d.getOut().getSignal().setName("Output shaft velocity setpoints [rad/s]");
+    qdMax.getOut().getSignal().setName("Saturated output shaft velocity setpoints [rad/s]");
+    i.getOut().getSignal().setName("Motor velocity setpoints [rad/s]");
+    kM.getOut().getSignal().setName("Motor voltage setpoints from feed forward [V]");
+    U.getOut().getSignal().setName("Motor voltage setpoints [V]");
+    M.getOut(0).getSignal().setName("Motor 1 voltage setpoint [V]");
+    M.getOut(1).getSignal().setName("Motor 2 voltage setpoint [V]");
 
     // Connect signals
-    controller1.getIn(0).connect(E2.getOut());
-    controller1.getIn(1).connect(E1.getOut());
-    QMax1.getIn().connect(controller1.getOut());
-    i1_inv.getIn().connect(QMax1.getOut());
-    kM1_inv.getIn().connect(i1_inv.getOut());
-    R1.getIn().connect(kM1_inv.getOut());
-    d1.getIn().connect(E1.getOut());
-    qdMax1.getIn().connect(d1.getOut());
-    i1.getIn().connect(qdMax1.getOut());
-    kM1.getIn().connect(i1.getOut());
-    U1.getIn(0).connect(R1.getOut());
-    U1.getIn(1).connect(kM1.getOut());
-    M1.getIn().connect(U1.getOut());
-
-    controller2.getIn(0).connect(E1.getOut());
-    controller2.getIn(1).connect(E2.getOut());
-    QMax2.getIn().connect(controller2.getOut());
-    i2_inv.getIn().connect(QMax2.getOut());
-    kM2_inv.getIn().connect(i2_inv.getOut());
-    R2.getIn().connect(kM2_inv.getOut());
-    d2.getIn().connect(E2.getOut());
-    qdMax2.getIn().connect(d2.getOut());
-    i2.getIn().connect(qdMax2.getOut());
-    kM2.getIn().connect(i2.getOut());
-    U2.getIn(0).connect(R2.getOut());
-    U2.getIn(1).connect(kM2.getOut());
-    M2.getIn().connect(U2.getOut());
+    E.getIn(0).connect(E1.getOut());
+    E.getIn(1).connect(E2.getOut());
+    E_set.getIn(0).connect(E2.getOut());
+    E_set.getIn(1).connect(E1.getOut());
+    controller.getIn(0).connect(E_set.getOut());
+    controller.getIn(1).connect(E.getOut());
+    QMax.getIn().connect(controller.getOut());
+    i_inv.getIn().connect(QMax.getOut());
+    kM_inv.getIn().connect(i_inv.getOut());
+    R.getIn().connect(kM_inv.getOut());
+    d.getIn().connect(E.getOut());
+    qdMax.getIn().connect(d.getOut());
+    i.getIn().connect(qdMax.getOut());
+    kM.getIn().connect(i.getOut());
+    U.getIn(0).connect(R.getOut());
+    U.getIn(1).connect(kM.getOut());
+    M.getIn().connect(U.getOut());
+    M1.getIn().connect(M.getOut(0));
+    M2.getIn().connect(M.getOut(1));
 
     // Add blocks to timedomain
     timedomain.addBlock(E1);
     timedomain.addBlock(E2);
-    timedomain.addBlock(controller1);
-    timedomain.addBlock(controller2);
-    timedomain.addBlock(QMax1);
-    timedomain.addBlock(QMax2);
-    timedomain.addBlock(i1_inv);
-    timedomain.addBlock(i2_inv);
-    timedomain.addBlock(kM1_inv);
-    timedomain.addBlock(kM2_inv);
-    timedomain.addBlock(R1);
-    timedomain.addBlock(R2);
-    timedomain.addBlock(d1);
-    timedomain.addBlock(d2);
-    timedomain.addBlock(qdMax1);
-    timedomain.addBlock(qdMax2);
-    timedomain.addBlock(i1);
-    timedomain.addBlock(i2);
-    timedomain.addBlock(kM1);
-    timedomain.addBlock(kM2);
-    timedomain.addBlock(U1);
-    timedomain.addBlock(U2);
+    timedomain.addBlock(E);
+    timedomain.addBlock(E_set);
+    timedomain.addBlock(controller);
+    timedomain.addBlock(QMax);
+    timedomain.addBlock(i_inv);
+    timedomain.addBlock(kM_inv);
+    timedomain.addBlock(R);
+    timedomain.addBlock(d);
+    timedomain.addBlock(qdMax);
+    timedomain.addBlock(i);
+    timedomain.addBlock(kM);
+    timedomain.addBlock(U);
+    timedomain.addBlock(M);
     timedomain.addBlock(M1);
     timedomain.addBlock(M2);
 
