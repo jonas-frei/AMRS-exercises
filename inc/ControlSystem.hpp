@@ -20,12 +20,13 @@ public:
 
     // Define Blocks
     PeripheralInput<> E1, E2;
-    PDController<> controller1, controller2;
-    D<> d1, d2;
-    Gain<> i1, i2, kM1, kM2, i1_inv, i2_inv, kM1_inv, kM2_inv, R1, R2;
-    Saturation<> qdMax1, qdMax2, QMax1, QMax2;
-    PeripheralOutput<> M1, M2;
-    Sum<> U1, U2;
+    PDController<> controller;
+    D<> d;
+    Gain<> i, kM, i_inv, kM_inv, R;
+    Saturation<> qdMax, QMax;
+    Sum<> U;
+    PeripheralOutput<> M1;
+    
     TimeDomain timedomain;
 };
 
