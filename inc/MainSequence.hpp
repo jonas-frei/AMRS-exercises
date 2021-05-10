@@ -30,7 +30,7 @@ public:
         {
             sleep(1.0);
             log.info() << cs.E.getOut().getSignal();
-            log.info() << cs.M.getOut().getSignal();
+            log.info() << cs.U.getOut().getSignal();
         }
         return 0;
     }
