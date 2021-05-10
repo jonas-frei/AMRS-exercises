@@ -128,7 +128,7 @@
 							"minOut":	0, "maxOut": 16 },
 						   { "id" : "gear",
 							"minIn": 	0, "maxIn": 1,
-							"minOut":	0, "maxOut": 33 }
+							"minOut":	0, "maxOut": 33.086538461 }
 					 ],
 				"range": [ { "id" : "fqd",
 							"noLimit": 	true },
@@ -149,7 +149,7 @@
 							"minOut":	0, "maxOut": 16 },
 						   { "id" : "gear",
 							"minIn": 	0, "maxIn": 1,
-							"minOut":	0, "maxOut": 33 }
+							"minOut":	0, "maxOut": 33.086538461 }
 					 ],
 				"range": [ { "id" : "fqd",
 							"noLimit": 	true },

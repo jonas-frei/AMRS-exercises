@@ -3,8 +3,8 @@
 ControlSystem::ControlSystem(double dt)
     : E1("enc1"), E2("enc2"),
       scale1(0.03 / M_PI),
-      QMax1(0.03),
-      i1_inv(1.0/33.0),
+      QMax1(0.1),
+      i1_inv(104.0/3441.0),
       kM1_inv(1/8.44e-3),
       R1(8.0),
       M1("motor1"),
