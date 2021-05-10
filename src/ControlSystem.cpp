@@ -2,13 +2,13 @@
 
 ControlSystem::ControlSystem(double dt)
     : E1("enc1"), E2("enc2"),
-      controller1(1.0 / dt, 0.7, 4.4, 6.8e-8 * 33.0 * 33.0), controller2(1.0 / dt, 0.7, 4.4, 6.8e-8 * 33.0 * 33.0),
-      QMax1(0.03), QMax2(0.03),
-      i1_inv(1.0 / 33.0), i2_inv(1.0 / 33.0),
+      controller1(1.0 / dt, 0.7, 4.4, 6.8e-8 * 3441.0 / 104.0 * 3441.0 / 104.0), controller2(1.0 / dt, 0.7, 4.4, 6.8e-8 * 3441.0 / 104.0 * 3441.0 / 104.0),
+      QMax1(0.1), QMax2(0.1),
+      i1_inv(104.0 / 3441.0), i2_inv(104.0 / 3441.0),
       kM1_inv(1 / 8.44e-3), kM2_inv(1 / 8.44e-3),
       R1(8.0), R2(8.0),
       qdMax1(21.3), qdMax2(21.3),
-      i1(33.0), i2(33.0),
+      i1(3441.0 / 104.0), i2(3441.0 / 104.0),
       kM1(8.44e-3), kM2(8.44e-3),
       M1("motor1"), M2("motor2"),
       timedomain("Main time domain", dt, true)
@@ -62,7 +62,6 @@ ControlSystem::ControlSystem(double dt)
     kM2.getOut().getSignal().setName("Motor 2 setpoint voltage from feed forward [V]");
     U1.getOut().getSignal().setName("Motor 1 setpoint voltage [V]");
     U2.getOut().getSignal().setName("Motor 2 setpoint voltage [V]");
-
 
     // Connect signals
     controller1.getIn(0).connect(E2.getOut());
