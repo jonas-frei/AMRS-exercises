@@ -65,7 +65,7 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
 
     // Add events to multiple safety levels
     addEventToAllLevelsBetween(slSystemOn, slMotorPowerOn, emergency, slEmergency, kPublicEvent);
-    addEventToAllLevelsBetween(slSystemOn, slMotorPowerOn, emergency, slEmergency, kPublicEvent);
+    addEventToAllLevelsBetween(slSystemOn, slMotorPowerOn, abort, slShuttingDown, kPublicEvent);
 
     // Define input actions for all levels
     slSystemOff.setInputActions({ ignore(readyButton) });
