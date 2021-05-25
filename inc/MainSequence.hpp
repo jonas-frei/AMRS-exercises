@@ -26,10 +26,16 @@ public:
 
     int action()
     {
+        while (eeros::sequencer::Sequencer::running && ss.getCurrentLevel() < sp.slSystemOn)
+            ; // Wait for safety system to get into slSystemOn
+            cs.piController.enableIntegrator();
         while (eeros::sequencer::Sequencer::running)
         {
+            log.info() << cs.piController.getOutQ().getSignal();
+            log.info() << cs.piController.getOutqd().getSignal();
+            log.info() << cs.invMotMod.getOutU().getSignal();
             sleep(1.0);
-            log.info() << cs.Ewl.getOut().getSignal() << " " << cs.Ewr.getOut().getSignal();
+            //log.info() << cs.Ewl.getOut().getSignal() << " " << cs.Ewr.getOut().getSignal();
         }
         return 0;
     }
