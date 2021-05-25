@@ -18,6 +18,10 @@ namespace AMRSC
         const double M = 0.046;                     // [kg]
         const double ILIMIT = 0.1;                  // [m]
     }
+    namespace ROB
+    {
+        const double B = 0.15;                      // [m]
+    }
 }
 
 #endif // AMRSCONSTANTS_HPP_
