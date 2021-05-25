@@ -4,9 +4,12 @@
 #include <eeros/control/TimeDomain.hpp>
 #include <eeros/core/Executor.hpp>
 #include <eeros/control/Constant.hpp>
-#include <eeros/control/Gain.hpp>
 #include <eeros/control/PeripheralInput.hpp>
+#include <eeros/control/D.hpp>
+#include "customBlocks/InvMotMod.hpp"
+#include "customBlocks/PIController.hpp"
 #include <eeros/control/PeripheralOutput.hpp>
+#include "AMRSConstants.hpp"
 
 using namespace eeros::control;
 
@@ -17,10 +20,12 @@ public:
 
     // Define Blocks
     PeripheralInput<> Ewl, Ewr;
-    Constant<> myConstant;
+    D<> Dwl, Dwr;
+    Constant<> myConstant, myConstant2;
+    PIController<> piController;
+    InvMotMod<> invMotMod;
     PeripheralOutput<> Mwl, Mwr;
-
-
+    
     TimeDomain timedomain;
 };
 
