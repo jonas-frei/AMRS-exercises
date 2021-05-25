@@ -2,6 +2,7 @@
 
 ControlSystem::ControlSystem(double dt)
     : Ewl("enc1"), Ewr("enc2"),
+      fwKinOdom(AMRSC::ROB::B),
       myConstant({0.2, 0.4}),
       invMotMod(AMRSC::MOT::QMAX, AMRSC::MOT::qdMAX, AMRSC::MOT::i, AMRSC::MOT::KM, AMRSC::MOT::R),
       piController(1.0 / dt, AMRSC::CONT::D, AMRSC::CONT::s, AMRSC::CONT::M, AMRSC::CONT::ILIMIT),
@@ -14,6 +15,7 @@ ControlSystem::ControlSystem(double dt)
     Ewr.setName("Ewr");
     vw.setName("vw");
     mux.setName("mux");
+    fwKinOdom.setName("fwKinOdom");
     myConstant.setName("My constant");
     piController.setName("PI Controller");
     invMotMod.setName("invMotMod");
@@ -34,6 +36,7 @@ ControlSystem::ControlSystem(double dt)
     mux.getIn(0).connect(Ewl.getOut());
     mux.getIn(1).connect(Ewr.getOut());
     vw.getIn().connect(mux.getOut());
+    fwKinOdom.getIn().connect(vw.getOut());
     piController.getInqds().connect(myConstant.getOut());
     piController.getInqd().connect(vw.getOut());
     invMotMod.getInQ().connect(piController.getOutQ());
@@ -47,12 +50,13 @@ ControlSystem::ControlSystem(double dt)
     timedomain.addBlock(Ewr);
     timedomain.addBlock(mux);
     timedomain.addBlock(vw);
+    timedomain.addBlock(fwKinOdom);
     timedomain.addBlock(myConstant);
     timedomain.addBlock(piController);
     timedomain.addBlock(invMotMod);
     timedomain.addBlock(deMux);
-    timedomain.addBlock(Mwl);
-    timedomain.addBlock(Mwr);
+    //timedomain.addBlock(Mwl);
+    //timedomain.addBlock(Mwr);
 
     // Add timedomain to executor
     eeros::Executor::instance().add(timedomain);

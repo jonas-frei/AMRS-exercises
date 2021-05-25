@@ -5,8 +5,9 @@
 #include <eeros/core/Executor.hpp>
 #include <eeros/control/Constant.hpp>
 #include <eeros/control/PeripheralInput.hpp>
-#include <eeros/control/D.hpp>
 #include <eeros/control/Mux.hpp>
+#include <eeros/control/D.hpp>
+#include "customBlocks/fwKinOdom.hpp"
 #include "customBlocks/InvMotMod.hpp"
 #include "customBlocks/PIController.hpp"
 #include <eeros/control/DeMux.hpp>
@@ -24,6 +25,7 @@ public:
     PeripheralInput<> Ewl, Ewr;
     Mux<2> mux;
     D<eeros::math::Vector2> vw;
+    FwKinOdom fwKinOdom;
     Constant<eeros::math::Vector2> myConstant;
     PIController<eeros::math::Vector2> piController;
     InvMotMod<eeros::math::Vector2> invMotMod;
