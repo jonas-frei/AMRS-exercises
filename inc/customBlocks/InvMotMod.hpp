@@ -36,9 +36,10 @@ public:
         this->qdMax.getOut().getSignal().setName("Saturated wheel velocity setpoint [m/s]");
         this->iInv.getOut().getSignal().setName("Motor torque setpoint [Nm]");
         this->kMInv.getOut().getSignal().setName("Motor current setpoint [A]");
-        this->R.getOut().getSignal().setName("Motor voltage setpoint [V]");
+        this->R.getOut().getSignal().setName("Motor voltage setpoint from force [V]");
         this->i.getOut().getSignal().setName("Motor angular velocity setpoint [rad/s]");
-        this->kM.getOut().getSignal().setName("Motor voltage setpoint [V]");
+        this->kM.getOut().getSignal().setName("Motor voltage setpoint from velocity [V]");
+        this->U.getOut().getSignal().setName("Motor voltage setpoint [V]");
 
         // Connect all signals
         this->iInv.getIn().connect(this->QMax.getOut());
