@@ -50,13 +50,16 @@ public:
         this->U.getIn(1).connect(this->kM.getOut());
     }
 
+    // Input getter functions
     Input<T> &getInQ() { return QMax.getIn(); }
     Input<T> &getInqd() { return qdMax.getIn(); }
 
+    // Output getter functions
     Output<T> &getOutU() { return U.getOut(); }
 
     virtual void run()
     {
+        // run the blocks in their respective order
         QMax.run();
         iInv.run();
         kMInv.run();
@@ -68,6 +71,7 @@ public:
     }
 
 protected:
+    // Used blocks
     Saturation<T> QMax, qdMax;
     Gain<T> iInv, kMInv, R, i, kM;
     Sum<2, T> U;
