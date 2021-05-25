@@ -29,11 +29,11 @@ public:
         while (eeros::sequencer::Sequencer::running && ss.getCurrentLevel() < sp.slSystemOn)
             ; // Wait for safety system to get into slSystemOn
             cs.piController.enableIntegrator();
+            cs.fwKinOdom.enableIntegrators();
         while (eeros::sequencer::Sequencer::running)
         {
-            log.info() << cs.piController.getOutQ().getSignal();
-            log.info() << cs.piController.getOutqd().getSignal();
-            log.info() << cs.invMotMod.getOutU().getSignal();
+            log.info() << cs.fwKinOdom.getOutGrR().getSignal();
+            log.info() << cs.fwKinOdom.getOutphi().getSignal();
             sleep(1.0);
             //log.info() << cs.Ewl.getOut().getSignal() << " " << cs.Ewr.getOut().getSignal();
         }
