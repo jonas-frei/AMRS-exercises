@@ -53,12 +53,12 @@ public:
     void enableIntegrator(void) { e.enable(); }
     void disableIntegrator(void) { e.disable(); }
 
-protected:
     // Used blocks
     Sum<2, T> ed, qddC;
     Gain<T> qd, Kp, KI, M;
     I<T> e;
 
+private:
     void init(double IUpperLimit, double ILowerLimit)
     {
         // Name all Blocks
