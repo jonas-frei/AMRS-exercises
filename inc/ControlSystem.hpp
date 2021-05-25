@@ -22,8 +22,8 @@ public:
 
     // Define Blocks
     PeripheralInput<> Ewl, Ewr;
-    D<> Dwl, Dwr;
     Mux<2> mux;
+    D<eeros::math::Vector2> vw;
     Constant<eeros::math::Vector2> myConstant;
     PIController<eeros::math::Vector2> piController;
     InvMotMod<eeros::math::Vector2> invMotMod;
