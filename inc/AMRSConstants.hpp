@@ -16,6 +16,7 @@ namespace AMRSC
         const double D = 0.7;                       // [-]
         const double s = 2.2;                       // [-]
         const double M = 0.046;                     // [kg]
+        const double ILIMIT = 0.1;                  // [m]
     }
 }
 
