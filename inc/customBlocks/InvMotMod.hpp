@@ -22,14 +22,14 @@ public:
           kM(kM)
     {
         // Name all blocks
-        this->QMax.setName("QMax");
-        this->qdMax.setName("qdMax");
-        this->iInv.setName("iInv");
-        this->kMInv.setName("kMInv");
-        this->R.setName("R");
-        this->i.setName("i");
-        this->kM.setName("kM");
-        this->U.setName("U");
+        this->QMax.setName("InvMotMod->QMax");
+        this->qdMax.setName("InvMotMod->qdMax");
+        this->iInv.setName("InvMotMod->iInv");
+        this->kMInv.setName("InvMotMod->kMInv");
+        this->R.setName("InvMotMod->R");
+        this->i.setName("InvMotMod->i");
+        this->kM.setName("InvMotMod->kM");
+        this->U.setName("InvMotMod->U");
 
         // Name all signals
         this->QMax.getOut().getSignal().setName("Saturated wheel force setpoint [N]");
