@@ -71,7 +71,6 @@ public:
         U.run();
     }
 
-protected:
     // Used blocks
     Saturation<T> QMax, qdMax;
     Gain<T> iInv, kMInv, R, i, kM;
