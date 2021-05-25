@@ -6,8 +6,10 @@
 #include <eeros/control/Constant.hpp>
 #include <eeros/control/PeripheralInput.hpp>
 #include <eeros/control/D.hpp>
+#include <eeros/control/Mux.hpp>
 #include "customBlocks/InvMotMod.hpp"
 #include "customBlocks/PIController.hpp"
+#include <eeros/control/DeMux.hpp>
 #include <eeros/control/PeripheralOutput.hpp>
 #include "AMRSConstants.hpp"
 
@@ -20,10 +22,12 @@ public:
 
     // Define Blocks
     PeripheralInput<> Ewl, Ewr;
-    D<> Dwl, Dwr;
-    Constant<> myConstant, myConstant2;
-    PIController<> piController;
-    InvMotMod<> invMotMod;
+    Mux<2> mux;
+    D<eeros::math::Vector2> vw;
+    Constant<eeros::math::Vector2> myConstant;
+    PIController<eeros::math::Vector2> piController;
+    InvMotMod<eeros::math::Vector2> invMotMod;
+    DeMux<2> deMux;
     PeripheralOutput<> Mwl, Mwr;
     
     TimeDomain timedomain;
