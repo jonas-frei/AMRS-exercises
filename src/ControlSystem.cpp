@@ -21,9 +21,9 @@ ControlSystem::ControlSystem(double dt)
     Mwr.setName("Mwr");
 
     // Name all signals
-    Ewl.getOut().getSignal().setName("Position left wheel [m]");
-    Ewr.getOut().getSignal().setName("Position right wheel [m]");
-    myConstant.getOut().getSignal().setName("Voltage motor right wheel [V]");
+    Ewl.getOut().getSignal().setName("Left wheel position [m]");
+    Ewr.getOut().getSignal().setName("Right wheel position [m]");
+    myConstant.getOut().getSignal().setName("Right motor voltage [V]");
 
     // Connect signals
     Dwl.getIn().connect(Ewl.getOut());
