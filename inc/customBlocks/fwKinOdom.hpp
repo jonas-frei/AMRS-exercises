@@ -2,9 +2,7 @@
 #define FWKINODOM_HPP_
 
 #include <eeros/math/Matrix.hpp>
-#include <eeros/control/Signal.hpp>
 #include <eeros/control/Block1i.hpp>
-#include <eeros/control/Constant.hpp>
 #include <eeros/control/I.hpp>
 #include <eeros/control/Output.hpp>
 
@@ -13,44 +11,47 @@ using namespace eeros::control;
 class FwKinOdom : public Block1i<eeros::math::Vector2>
 {
 public:
-    FwKinOdom(double B)
+    FwKinOdom(double B, eeros::math::Vector2 GrRStart = 0.0, double phiStart = 0.0)
         : B(B)
     {
         // Name all blocks
-        phi.setName("FwKinOdom->phi");
         GrR.setName("FwKinOdom->GrR");
+        phi.setName("FwKinOdom->phi");
 
         // Name all signals
-        RvRx.setName("Robot velocity in x direction in the robot frame [m/s]");
+        RvRx.getSignal().setName("Robot velocity in x direction in the robot frame [m/s]");
         omegaR.getSignal().setName("Robot angular velocity around the z Axis [rad/s]");
         GvR.getSignal().setName("Robot velocity in the global frame [m/s]");
         GrR.getOut().getSignal().setName("Robot position in the global frame [m]");
         phi.getOut().getSignal().setName("Robot orientation in the global frame [rad]");
 
         // Connect all signals
-        phi.getIn().connect(omegaR);
-        phi.setInitCondition(0.0);
         GrR.getIn().connect(GvR);
-        GrR.setInitCondition(0.0);
+        phi.getIn().connect(omegaR);
+
+        // Additional block configuration
+        GrR.setInitCondition(GrRStart);
+        phi.setInitCondition(phiStart);
     }
 
     // Output getter functions
     Output<eeros::math::Vector2> &getOutGvR() { return GvR; }
     Output<eeros::math::Vector2> &getOutGrR() { return GrR.getOut(); }
     Output<> &getOutphi() { return phi.getOut(); }
+    Output<> &getOutRvRx() { return RvRx; }
     Output<> &getOutomegaR() { return omegaR; }
 
     virtual void run()
     {
         // run the blocks in their respective order
-        RvRx.setValue((this->getIn().getSignal().getValue()[0] + this->getIn().getSignal().getValue()[1]) / 2.0);
-        RvRx.setTimestamp(this->getIn().getSignal().getTimestamp());
+        RvRx.getSignal().setValue((this->getIn().getSignal().getValue()[0] + this->getIn().getSignal().getValue()[1]) / 2.0);
+        RvRx.getSignal().setTimestamp(this->getIn().getSignal().getTimestamp());
         omegaR.getSignal().setValue((this->getIn().getSignal().getValue()[1] - this->getIn().getSignal().getValue()[0]) / B);
         omegaR.getSignal().setTimestamp(this->getIn().getSignal().getTimestamp());
         phi.run();
-        GvR.getSignal().setValue({cos(phi.getOut().getSignal().getValue()) * RvRx.getValue(),
-                                  sin(phi.getOut().getSignal().getValue()) * RvRx.getValue()});
-        GvR.getSignal().setTimestamp(RvRx.getTimestamp());
+        GvR.getSignal().setValue({cos(phi.getOut().getSignal().getValue()) * RvRx.getSignal().getValue(),
+                                  sin(phi.getOut().getSignal().getValue()) * RvRx.getSignal().getValue()});
+        GvR.getSignal().setTimestamp(RvRx.getSignal().getTimestamp());
         GrR.run();
     }
 
@@ -68,10 +69,16 @@ public:
         phi.disable();
     }
 
+    // Set position and orientation
+    void setPose(eeros::math::Vector2 GrRStart, double phiStart)
+    {
+        GrR.setInitCondition(GrRStart);
+        phi.setInitCondition(phiStart);
+    }
+
 protected:
     double B;
-    Signal<> RvRx;
-    Output<> omegaR;
+    Output<> RvRx, omegaR;
     Output<eeros::math::Vector2> GvR;
     I<eeros::math::Vector2> GrR;
     I<> phi;
