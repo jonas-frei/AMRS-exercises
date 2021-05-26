@@ -32,8 +32,8 @@ public:
             cs.fwKinOdom.enableIntegrators();
         while (eeros::sequencer::Sequencer::running)
         {
-            log.info() << cs.fwKinOdom.getOutGrR().getSignal();
-            log.info() << cs.fwKinOdom.getOutphi().getSignal();
+            log.info() << cs.fwKinOdom.getOutRvRx().getSignal();
+            log.info() << cs.fwKinOdom.getOutomegaR().getSignal();
             sleep(1.0);
             //log.info() << cs.Ewl.getOut().getSignal() << " " << cs.Ewr.getOut().getSignal();
         }
