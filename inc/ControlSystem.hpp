@@ -9,6 +9,7 @@
 #include <eeros/control/D.hpp>
 #include "customBlocks/fwKinOdom.hpp"
 #include "customBlocks/InvMotMod.hpp"
+#include "customBlocks/InvKin.hpp"
 #include "customBlocks/PIController.hpp"
 #include <eeros/control/DeMux.hpp>
 #include <eeros/control/PeripheralOutput.hpp>
@@ -26,12 +27,13 @@ public:
     Mux<2> mux;
     D<eeros::math::Vector2> vw;
     FwKinOdom fwKinOdom;
-    Constant<eeros::math::Vector2> myConstant;
+    Constant<> myConstant, myConstant2;
+    InvKin invKin;
     PIController<eeros::math::Vector2> piController;
     InvMotMod<eeros::math::Vector2> invMotMod;
     DeMux<2> deMux;
     PeripheralOutput<> Mwl, Mwr;
-    
+
     TimeDomain timedomain;
 };
 

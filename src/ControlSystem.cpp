@@ -3,9 +3,11 @@
 ControlSystem::ControlSystem(double dt)
     : Ewl("enc1"), Ewr("enc2"),
       fwKinOdom(AMRSC::ROB::B),
-      myConstant({0.2, 0.4}),
-      invMotMod(AMRSC::MOT::QMAX, AMRSC::MOT::qdMAX, AMRSC::MOT::i, AMRSC::MOT::KM, AMRSC::MOT::R),
+      myConstant(0.0),
+      myConstant2(1.0),
+      invKin(AMRSC::ROB::B),
       piController(1.0 / dt, AMRSC::CONT::D, AMRSC::CONT::s, AMRSC::CONT::M, AMRSC::CONT::ILIMIT),
+      invMotMod(AMRSC::MOT::QMAX, AMRSC::MOT::qdMAX, AMRSC::MOT::i, AMRSC::MOT::KM, AMRSC::MOT::R),
       Mwl("motor1"), Mwr("motor2"),
 
       timedomain("Main time domain", dt, true)
@@ -17,6 +19,7 @@ ControlSystem::ControlSystem(double dt)
     mux.setName("mux");
     fwKinOdom.setName("fwKinOdom");
     myConstant.setName("My constant");
+    invKin.setName("invKin");
     piController.setName("PI Controller");
     invMotMod.setName("invMotMod");
     deMux.setName("deMux");
@@ -37,7 +40,9 @@ ControlSystem::ControlSystem(double dt)
     mux.getIn(1).connect(Ewr.getOut());
     vw.getIn().connect(mux.getOut());
     fwKinOdom.getIn().connect(vw.getOut());
-    piController.getInqds().connect(myConstant.getOut());
+    invKin.getIn(0).connect(myConstant.getOut());
+    invKin.getIn(1).connect(myConstant2.getOut());
+    piController.getInqds().connect(invKin.getOut());
     piController.getInqd().connect(vw.getOut());
     invMotMod.getInQ().connect(piController.getOutQ());
     invMotMod.getInqd().connect(piController.getOutqd());
@@ -52,11 +57,13 @@ ControlSystem::ControlSystem(double dt)
     timedomain.addBlock(vw);
     timedomain.addBlock(fwKinOdom);
     timedomain.addBlock(myConstant);
+    timedomain.addBlock(myConstant2);
+    timedomain.addBlock(invKin);
     timedomain.addBlock(piController);
     timedomain.addBlock(invMotMod);
     timedomain.addBlock(deMux);
-    //timedomain.addBlock(Mwl);
-    //timedomain.addBlock(Mwr);
+    timedomain.addBlock(Mwl);
+    timedomain.addBlock(Mwr);
 
     // Add timedomain to executor
     eeros::Executor::instance().add(timedomain);
