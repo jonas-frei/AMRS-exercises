@@ -15,8 +15,8 @@ ControlSystem::ControlSystem(double dt)
     // Name all blocks
     Ewl.setName("Ewl");
     Ewr.setName("Ewr");
-    vw.setName("vw");
     mux.setName("mux");
+    vw.setName("vw");
     fwKinOdom.setName("fwKinOdom");
     myConstant.setName("My constant");
     invKin.setName("invKin");
