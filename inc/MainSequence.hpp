@@ -26,17 +26,45 @@ public:
 
     int action()
     {
-        while (eeros::sequencer::Sequencer::running && ss.getCurrentLevel() < sp.slSystemOn)
-            ; // Wait for safety system to get into slSystemOn
-            cs.piController.enableIntegrator();
-            cs.fwKinOdom.enableIntegrators();
-        while (eeros::sequencer::Sequencer::running)
+        while (eeros::sequencer::Sequencer::running && ss.getCurrentLevel() < sp.slMotorPowerOn)
+            ; // Wait for safety system to get into slMotorPowerOn
+        /*cs.piController.enableIntegrator();
+        cs.fwKinOdom.enableIntegrators();
+        cs.posController.enable();*/
+        sleep(1.0);
+        cs.posController.setTarget(0.5, 0.0, 0.0);
+        while (eeros::sequencer::Sequencer::running && !cs.posController.getStatus())
         {
-            log.info() << cs.fwKinOdom.getOutRvRx().getSignal();
-            log.info() << cs.fwKinOdom.getOutomegaR().getSignal();
+            log.info() << cs.fwKinOdom.getOutGrR().getSignal();
+            log.info() << cs.fwKinOdom.getOutphi().getSignal();
             sleep(1.0);
             //log.info() << cs.Ewl.getOut().getSignal() << " " << cs.Ewr.getOut().getSignal();
         }
+        cs.posController.setTarget(0.5, 0.5, M_PI/2);
+        while (eeros::sequencer::Sequencer::running && !cs.posController.getStatus())
+        {
+            log.info() << cs.fwKinOdom.getOutGrR().getSignal();
+            log.info() << cs.fwKinOdom.getOutphi().getSignal();
+            sleep(1.0);
+            //log.info() << cs.Ewl.getOut().getSignal() << " " << cs.Ewr.getOut().getSignal();
+        }
+        cs.posController.setTarget(0.0, 0.5, M_PI);
+        while (eeros::sequencer::Sequencer::running && !cs.posController.getStatus())
+        {
+            log.info() << cs.fwKinOdom.getOutGrR().getSignal();
+            log.info() << cs.fwKinOdom.getOutphi().getSignal();
+            sleep(1.0);
+            //log.info() << cs.Ewl.getOut().getSignal() << " " << cs.Ewr.getOut().getSignal();
+        }
+        cs.posController.setTarget(0.0, 0.0, 0.0);
+        while (eeros::sequencer::Sequencer::running && !cs.posController.getStatus())
+        {
+            log.info() << cs.fwKinOdom.getOutGrR().getSignal();
+            log.info() << cs.fwKinOdom.getOutphi().getSignal();
+            sleep(1.0);
+            //log.info() << cs.Ewl.getOut().getSignal() << " " << cs.Ewr.getOut().getSignal();
+        }
+        ss.triggerEvent(sp.abort);
         return 0;
     }
 

@@ -2,7 +2,7 @@
 
 MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     : cs(cs),
-    
+
       slSystemOff("System is offline"),
       slShuttingDown("System shutting down"),
       slHalting("System halting"),
@@ -31,12 +31,12 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     redLed = hal.getLogicOutput("onBoardLEDred");
     greenLed = hal.getLogicOutput("onBoardLEDgreen");
 
-    criticalOutputs = { redLed, greenLed };
+    criticalOutputs = {redLed, greenLed};
 
     // Declare and add critical inputs
     readyButton = hal.getLogicInput("onBoardButtonPause", true);
 
-    criticalInputs = { readyButton };
+    criticalInputs = {readyButton};
 
     // Add all safety levels to the safety system
     addLevel(slSystemOff);
@@ -68,80 +68,93 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     addEventToAllLevelsBetween(slSystemOn, slMotorPowerOn, emergency, slEmergency, kPublicEvent);
 
     // Define input actions for all levels
-    slSystemOff.setInputActions({ ignore(readyButton) });
-    slShuttingDown.setInputActions({ ignore(readyButton) });
-    slHalting.setInputActions({ ignore(readyButton) });
-    slStartingUp.setInputActions({ ignore(readyButton) });
-    slEmergency.setInputActions({ ignore(readyButton) });
-    slEmergencyBraking.setInputActions({ ignore(readyButton) });
-    slSystemOn.setInputActions({ check(readyButton, false, powerOn) });
-    slMotorPowerOn.setInputActions({ ignore(readyButton) });
-    slSystemMoving.setInputActions({ ignore(readyButton) });
+    slSystemOff.setInputActions({ignore(readyButton)});
+    slShuttingDown.setInputActions({ignore(readyButton)});
+    slHalting.setInputActions({ignore(readyButton)});
+    slStartingUp.setInputActions({ignore(readyButton)});
+    slEmergency.setInputActions({ignore(readyButton)});
+    slEmergencyBraking.setInputActions({ignore(readyButton)});
+    slSystemOn.setInputActions({check(readyButton, false, powerOn)});
+    slMotorPowerOn.setInputActions({ignore(readyButton)});
+    slSystemMoving.setInputActions({ignore(readyButton)});
 
     // Define output actions for all levels
-    slSystemOff.setOutputActions({ set(redLed, true), set(greenLed, false) });
-    slShuttingDown.setOutputActions({ set(redLed, true), set(greenLed, false) });
-    slHalting.setOutputActions({ set(redLed, true), set(greenLed, false) });
-    slStartingUp.setOutputActions({ set(redLed, true), set(greenLed, false) });
-    slEmergency.setOutputActions({ set(redLed, true), set(greenLed, false) });
-    slEmergencyBraking.setOutputActions({ set(redLed, true), set(greenLed, false) });
-    slSystemOn.setOutputActions({ set(redLed, true), set(greenLed, true) });
-    slMotorPowerOn.setOutputActions({ set(redLed, false), set(greenLed, true) });
-    slSystemMoving.setOutputActions({ set(redLed, false), set(greenLed, true) });
+    slSystemOff.setOutputActions({set(redLed, true), set(greenLed, false)});
+    slShuttingDown.setOutputActions({set(redLed, true), set(greenLed, false)});
+    slHalting.setOutputActions({set(redLed, true), set(greenLed, false)});
+    slStartingUp.setOutputActions({set(redLed, true), set(greenLed, false)});
+    slEmergency.setOutputActions({set(redLed, true), set(greenLed, false)});
+    slEmergencyBraking.setOutputActions({set(redLed, true), set(greenLed, false)});
+    slSystemOn.setOutputActions({set(redLed, true), set(greenLed, true)});
+    slMotorPowerOn.setOutputActions({set(redLed, false), set(greenLed, true)});
+    slSystemMoving.setOutputActions({set(redLed, false), set(greenLed, true)});
 
     // Define and add level actions
-     slSystemOff.setLevelAction([&](SafetyContext *privateContext) {
-        eeros::Executor::stop();
-        eeros::sequencer::Sequencer::instance().abort();
-    });
+    slSystemOff.setLevelAction([&](SafetyContext *privateContext)
+                               {
+                                   eeros::Executor::stop();
+                                   eeros::sequencer::Sequencer::instance().abort();
+                               });
 
-    slShuttingDown.setLevelAction([&](SafetyContext *privateContext) {
-        cs.timedomain.stop();
-        privateContext->triggerEvent(shutdown);
-    });
+    slShuttingDown.setLevelAction([&](SafetyContext *privateContext)
+                                  {
+                                      cs.timedomain.stop();
+                                      privateContext->triggerEvent(shutdown);
+                                  });
 
-    slHalting.setLevelAction([&](SafetyContext *privateContext) {
-        // Check if motors are standing sill
-        privateContext->triggerEvent(motorsHalted);
-    });
+    slHalting.setLevelAction([&](SafetyContext *privateContext)
+                             {
+                                 // Check if motors are standing sill
+                                 privateContext->triggerEvent(motorsHalted);
+                             });
 
-    slStartingUp.setLevelAction([&](SafetyContext *privateContext) {
-        cs.timedomain.start();
-        privateContext->triggerEvent(systemStarted);
-    });
+    slStartingUp.setLevelAction([&](SafetyContext *privateContext)
+                                {
+                                    cs.timedomain.start();
+                                    cs.fwKinOdom.enableIntegrators();
+                                    privateContext->triggerEvent(systemStarted);
+                                });
 
     slEmergency.setLevelAction([&, dt](SafetyContext *privateContext) {
-        if (slEmergency.getNofActivations()*dt == 1)  // wait 1 sec
-        {
-            static int counter = 0;
-            if (counter++ == 3) privateContext->triggerEvent(abort); // abort after entering emergency sequence 4 times
-            privateContext->triggerEvent(resetEmergency);
-        }
+
     });
 
-    slEmergencyBraking.setLevelAction([&](SafetyContext *privateContext) {
-        // Check if motors are standing still
-        privateContext->triggerEvent(motorsHalted);
-    });
+    slEmergencyBraking.setLevelAction([&](SafetyContext *privateContext)
+                                      {
+                                          // Check if motors are standing still
+                                          privateContext->triggerEvent(motorsHalted);
+                                      });
 
-    slSystemOn.setLevelAction([&](SafetyContext *privateContext) {
-    });
+    slSystemOn.setLevelAction([&](SafetyContext *privateContext)
+                              {
+                                  if (slSystemOn.getNofActivations() == 1)
+                                  {
+                                      cs.piController.disableIntegrator();
+                                      cs.posController.disable();
+                                  }
+                              });
 
-    slMotorPowerOn.setLevelAction([&](SafetyContext *privateContext) {
-        // Check if the motors are moving
-        privateContext->triggerEvent(startMoving);
-    });
+    slMotorPowerOn.setLevelAction([&](SafetyContext *privateContext)
+                                  {
+                                      // Check if the motors are moving
+                                      if (slMotorPowerOn.getNofActivations() == 1)
+                                      {
+                                          cs.piController.enableIntegrator();
+                                          cs.posController.enable();
+                                      }
+                                      privateContext->triggerEvent(startMoving);
+                                  });
 
-    slSystemMoving.setLevelAction([&](SafetyContext *privateContext) {
-        // Check if the motors are standing still
-        // -> slMotorsPowerOn
-    });
+    slSystemMoving.setLevelAction([&](SafetyContext *privateContext)
+                                  {
+                                      // Check if the motors are standing still
+                                      // -> slMotorsPowerOn
+                                  });
 
     // Define entry level
     setEntryLevel(slSystemOff);
 
     // Define exit function
-    exitFunction = ([&](SafetyContext *privateContext) {
-        privateContext->triggerEvent(abort);
-    });
+    exitFunction = ([&](SafetyContext *privateContext)
+                    { privateContext->triggerEvent(abort); });
 }
