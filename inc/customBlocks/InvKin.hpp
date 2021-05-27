@@ -19,7 +19,7 @@ public:
         WJR.setName("InvKin->WJR");
 
         // Name all signals
-        mux.getOut().getSignal().setName("Robot velocity setpoint [m/s] and robot angular velocity setpoint [rad/s] in the global frame");
+        mux.getOut().getSignal().setName("{Robot velocity setpoint [m/s], robot angular velocity setpoint [rad/s]} in the global frame");
         WJR.getOut().getSignal().setName("Wheel velocities [m/s]");
 
         // Connect all signals
@@ -29,7 +29,7 @@ public:
     // Input getter function
     Input<> &getIn(uint8_t index)
     {
-        if (index > 2)
+        if (index >= 2)
             throw eeros::Fault("Index expeeds number of inputs in block '" + this->getName() + "'");
         return mux.getIn(index);
     }
