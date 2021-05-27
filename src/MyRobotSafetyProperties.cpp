@@ -90,66 +90,73 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     slSystemMoving.setOutputActions({set(redLed, false), set(greenLed, true)});
 
     // Define and add level actions
-    slSystemOff.setLevelAction([&](SafetyContext *privateContext)
-                               {
-                                   eeros::Executor::stop();
-                                   eeros::sequencer::Sequencer::instance().abort();
-                               });
+    slSystemOff.setLevelAction(
+        [&](SafetyContext *privateContext)
+        {
+            eeros::Executor::stop();
+            eeros::sequencer::Sequencer::instance().abort();
+        });
 
-    slShuttingDown.setLevelAction([&](SafetyContext *privateContext)
-                                  {
-                                      cs.timedomain.stop();
-                                      privateContext->triggerEvent(shutdown);
-                                  });
+    slShuttingDown.setLevelAction(
+        [&](SafetyContext *privateContext)
+        {
+            cs.timedomain.stop();
+            privateContext->triggerEvent(shutdown);
+        });
 
-    slHalting.setLevelAction([&](SafetyContext *privateContext)
-                             {
-                                 // Check if motors are standing sill
-                                 privateContext->triggerEvent(motorsHalted);
-                             });
+    slHalting.setLevelAction(
+        [&](SafetyContext *privateContext)
+        {
+            if (cs.vw.getOut().getSignal().getValue() <= 1e-6)
+                privateContext->triggerEvent(motorsHalted);
+        });
 
-    slStartingUp.setLevelAction([&](SafetyContext *privateContext)
-                                {
-                                    cs.timedomain.start();
-                                    cs.fwKinOdom.enableIntegrators();
-                                    privateContext->triggerEvent(systemStarted);
-                                });
+    slStartingUp.setLevelAction(
+        [&](SafetyContext *privateContext)
+        {
+            cs.timedomain.start();
+            cs.fwKinOdom.enableIntegrators();
+            privateContext->triggerEvent(systemStarted);
+        });
 
-    slEmergency.setLevelAction([&, dt](SafetyContext *privateContext) {
+    slEmergency.setLevelAction(
+        [&, dt](SafetyContext *privateContext)
+        {
+            cs.piController.disableIntegrator();
+            cs.posController.disable();
+        });
 
-    });
+    slEmergencyBraking.setLevelAction(
+        [&](SafetyContext *privateContext)
+        {
+            cs.piController.disableIntegrator();
+            cs.posController.disable();
+            if (cs.vw.getOut().getSignal().getValue() <= 1e-6)
+                privateContext->triggerEvent(motorsHalted);
+        });
 
-    slEmergencyBraking.setLevelAction([&](SafetyContext *privateContext)
-                                      {
-                                          // Check if motors are standing still
-                                          privateContext->triggerEvent(motorsHalted);
-                                      });
+    slSystemOn.setLevelAction(
+        [&](SafetyContext *privateContext)
+        {
+            cs.piController.disableIntegrator();
+            cs.posController.disable();
+        });
 
-    slSystemOn.setLevelAction([&](SafetyContext *privateContext)
-                              {
-                                  if (slSystemOn.getNofActivations() == 1)
-                                  {
-                                      cs.piController.disableIntegrator();
-                                      cs.posController.disable();
-                                  }
-                              });
+    slMotorPowerOn.setLevelAction(
+        [&](SafetyContext *privateContext)
+        {
+            cs.piController.enableIntegrator();
+            cs.posController.enable();
+            if (cs.invKin.getOut().getSignal().getValue() > 1e-3)
+                privateContext->triggerEvent(startMoving);
+        });
 
-    slMotorPowerOn.setLevelAction([&](SafetyContext *privateContext)
-                                  {
-                                      // Check if the motors are moving
-                                      if (slMotorPowerOn.getNofActivations() == 1)
-                                      {
-                                          cs.piController.enableIntegrator();
-                                          cs.posController.enable();
-                                      }
-                                      privateContext->triggerEvent(startMoving);
-                                  });
-
-    slSystemMoving.setLevelAction([&](SafetyContext *privateContext)
-                                  {
-                                      // Check if the motors are standing still
-                                      // -> slMotorsPowerOn
-                                  });
+    slSystemMoving.setLevelAction(
+        [&](SafetyContext *privateContext)
+        {
+            if (cs.invKin.getOut().getSignal().getValue() <= 1e-3)
+                privateContext->triggerEvent(stopMoving);
+        });
 
     // Define entry level
     setEntryLevel(slSystemOff);
