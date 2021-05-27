@@ -17,6 +17,11 @@ namespace AMRSC
         const double s = 2.2;                       // [-]
         const double M = 0.046;                     // [kg]
         const double ILIMIT = 0.1;                  // [m]
+        const double K1 = 0.5;
+        const double K2 = 1.0;
+        const double K3 = 1.0;
+        const double posTol = 1e-3;
+        const double rotTol = 1e-3;
     }
     namespace ROB
     {
