@@ -19,7 +19,8 @@ public:
         WJR.setName("InvKin->WJR");
 
         // Name all signals
-        mux.getOut().getSignal().setName("{Robot velocity setpoint [m/s], robot angular velocity setpoint [rad/s]} in the global frame");
+        mux.getOut().getSignal().setName("{Robot velocity setpoint [m/s], "
+                                         "robot angular velocity setpoint [rad/s]} in the global frame");
         WJR.getOut().getSignal().setName("Wheel velocities [m/s]");
 
         // Connect all signals
