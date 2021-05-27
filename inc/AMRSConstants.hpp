@@ -20,8 +20,8 @@ namespace AMRSC
         const double K1 = 0.5;
         const double K2 = 1.0;
         const double K3 = 1.0;
-        const double posTol = 1e-3;
-        const double rotTol = 1e-3;
+        const double posTol = 1e-3;                 // [m]
+        const double rotTol = 1e-3;                 // [rad]
     }
     namespace ROB
     {
