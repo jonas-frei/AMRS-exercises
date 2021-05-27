@@ -12,7 +12,7 @@ class FwKinOdom : public Block1i<eeros::math::Vector2>
 {
 public:
     FwKinOdom(double B, eeros::math::Vector2 GrRStart = 0.0, double phiStart = 0.0)
-        : B(B)
+        : B(B), RvRx(this), omegaR(this), GvR(this)
     {
         // Name all blocks
         GrR.setName("FwKinOdom->GrR");
