@@ -3,14 +3,15 @@
 
 #include <eeros/control/TimeDomain.hpp>
 #include <eeros/core/Executor.hpp>
-#include <eeros/control/Constant.hpp>
+
 #include <eeros/control/PeripheralInput.hpp>
 #include <eeros/control/Mux.hpp>
 #include <eeros/control/D.hpp>
 #include "customBlocks/fwKinOdom.hpp"
-#include "customBlocks/InvMotMod.hpp"
+#include "customBlocks/PositionController.hpp"
 #include "customBlocks/InvKin.hpp"
 #include "customBlocks/PIController.hpp"
+#include "customBlocks/InvMotMod.hpp"
 #include <eeros/control/DeMux.hpp>
 #include <eeros/control/PeripheralOutput.hpp>
 #include "AMRSConstants.hpp"
@@ -27,7 +28,7 @@ public:
     Mux<2> mux;
     D<eeros::math::Vector2> vw;
     FwKinOdom fwKinOdom;
-    Constant<> myConstant, myConstant2;
+    PositionController posController;
     InvKin invKin;
     PIController<eeros::math::Vector2> piController;
     InvMotMod<eeros::math::Vector2> invMotMod;

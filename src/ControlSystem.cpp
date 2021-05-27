@@ -3,8 +3,7 @@
 ControlSystem::ControlSystem(double dt)
     : Ewl("enc1"), Ewr("enc2"),
       fwKinOdom(AMRSC::ROB::B),
-      myConstant(0.0),
-      myConstant2(1.0),
+      posController(AMRSC::CONT::K1, AMRSC::CONT::K2, AMRSC::CONT::K3),
       invKin(AMRSC::ROB::B),
       piController(1.0 / dt, AMRSC::CONT::D, AMRSC::CONT::s, AMRSC::CONT::M, AMRSC::CONT::ILIMIT),
       invMotMod(AMRSC::MOT::QMAX, AMRSC::MOT::qdMAX, AMRSC::MOT::i, AMRSC::MOT::KM, AMRSC::MOT::R),
@@ -18,7 +17,7 @@ ControlSystem::ControlSystem(double dt)
     mux.setName("mux");
     vw.setName("vw");
     fwKinOdom.setName("fwKinOdom");
-    myConstant.setName("My constant");
+    posController.setName("posController");
     invKin.setName("invKin");
     piController.setName("PI Controller");
     invMotMod.setName("invMotMod");
@@ -31,7 +30,6 @@ ControlSystem::ControlSystem(double dt)
     Ewr.getOut().getSignal().setName("Right wheel position [m]");
     mux.getOut().getSignal().setName("Wheel positions [m]");
     vw.getOut().getSignal().setName("Wheel velocities [m/s]");
-    myConstant.getOut().getSignal().setName("Velocity setpoints [V]");
     deMux.getOut(0).getSignal().setName("Left motor voltage setpoint [V]");
     deMux.getOut(0).getSignal().setName("Right motor voltage setpoint [V]");
 
@@ -40,8 +38,10 @@ ControlSystem::ControlSystem(double dt)
     mux.getIn(1).connect(Ewr.getOut());
     vw.getIn().connect(mux.getOut());
     fwKinOdom.getIn().connect(vw.getOut());
-    invKin.getIn(0).connect(myConstant.getOut());
-    invKin.getIn(1).connect(myConstant2.getOut());
+    posController.getInGrR().connect(fwKinOdom.getOutGrR());
+    posController.getInphi().connect(fwKinOdom.getOutphi());
+    invKin.getIn(0).connect(posController.getOutRvRx());
+    invKin.getIn(1).connect(posController.getOutomegaR());
     piController.getInqds().connect(invKin.getOut());
     piController.getInqd().connect(vw.getOut());
     invMotMod.getInQ().connect(piController.getOutQ());
@@ -56,8 +56,7 @@ ControlSystem::ControlSystem(double dt)
     timedomain.addBlock(mux);
     timedomain.addBlock(vw);
     timedomain.addBlock(fwKinOdom);
-    timedomain.addBlock(myConstant);
-    timedomain.addBlock(myConstant2);
+    timedomain.addBlock(posController);
     timedomain.addBlock(invKin);
     timedomain.addBlock(piController);
     timedomain.addBlock(invMotMod);
