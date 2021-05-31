@@ -33,12 +33,13 @@ public:
         sleep(1.0);
         moveTo(0.5, 0.0, 0.0);
         sleep(1.0);
-        moveTo(0.5, 0.5, M_PI/2);
+        moveTo(0.5, 0.5, M_PI / 2);
         sleep(1.0);
         moveTo(0.0, 0.5, M_PI);
         sleep(1.0);
         moveTo(0.0, 0.0, 0.0);
-        ss.triggerEvent(sp.abort);
+        if (eeros::sequencer::Sequencer::running)
+            ss.triggerEvent(sp.abort);
         return 0;
     }
 

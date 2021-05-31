@@ -17,6 +17,7 @@
 #include "AMRSConstants.hpp"
 #include <eeros/control/Trace.hpp>
 #include "customBlocks/LowPassFilter.hpp"
+#include "customBlocks/KalmanFilter.hpp"
 
 using namespace eeros::control;
 
@@ -27,17 +28,16 @@ public:
 
     // Define Blocks
     PeripheralInput<> Ewl, Ewr;
-    Mux<2> mux;
-    D<eeros::math::Vector2> vw;
+    KalmanFilter<1, 1, 4, 1> KFwl, KFwr;
+    Mux<2> vw;
     FwKinOdom fwKinOdom;
     PositionController posController;
+    LowPassFilter<> lowPassFilter1, lowPassFilter2;
     InvKin invKin;
     PIController<eeros::math::Vector2> piController;
     InvMotMod<eeros::math::Vector2> invMotMod;
-    DeMux<2> deMux;
+    DeMux<2> UM;
     PeripheralOutput<> Mwl, Mwr;
-    Trace<eeros::math::Vector2> traceq, tracedq, traceU;
-    LowPassFilter<> lowPassFilter1, lowPassFilter2;
 
     TimeDomain timedomain;
 };

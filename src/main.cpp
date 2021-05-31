@@ -15,7 +15,7 @@ void signalHandler(int signum)
 
 int main(int argc, char **argv)
 {
-    const double dt = 0.005;
+    const double dt = 0.001;
     eeros::logger::Logger::setDefaultStreamLogger(std::cout);
     eeros::logger::Logger log = eeros::logger::Logger::getLogger();
 
@@ -46,19 +46,6 @@ int main(int argc, char **argv)
     executor.run();
 
     mainSequence.wait();
-
-    log.info() << "start writing file";
-    std::ofstream file;
-    file.open("/tmp/ctrlData.txt", std::ios::trunc);
-    timestamp_t *timeStampBuf = cs.traceq.getTimestampTrace();
-    eeros::math::Vector2 *buf1 = cs.traceq.getTrace();
-    eeros::math::Vector2 *buf2 = cs.tracedq.getTrace();
-    eeros::math::Vector2 *buf3 = cs.traceU.getTrace();
-    file << "time position velocity voltage" << std::endl;
-    for (int i = 0; i < cs.traceq.getSize(); i++)
-        file << timeStampBuf[i] << " " << buf1[i][0] << " " << buf2[i][0] << " " << buf3[i][0] << std::endl;
-    file.close();
-    log.info() << "file written";
 
     log.info() << "Template project finished...";
 
