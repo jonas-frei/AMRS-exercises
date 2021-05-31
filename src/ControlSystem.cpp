@@ -6,8 +6,8 @@ ControlSystem::ControlSystem(double dt)
       KFwr(AMRSC::KF::Ad, AMRSC::KF::Bd, AMRSC::KF::C, AMRSC::KF::Gd, AMRSC::KF::Q, AMRSC::KF::R),
       fwKinOdom(AMRSC::ROB::B),
       posController(AMRSC::CONT::K1, AMRSC::CONT::K2, AMRSC::CONT::K3),
-      lowPassFilter1(1, 0.2),
-      lowPassFilter2(1, 0.2),
+      lowPassRvRx(1, 0.2),
+      lowPassOmegaR(1, 0.2),
       invKin(AMRSC::ROB::B),
       piController(1.0 / dt, AMRSC::CONT::D, AMRSC::CONT::s, AMRSC::CONT::M, AMRSC::CONT::ILIMIT),
       invMotMod(AMRSC::MOT::QMAX, AMRSC::MOT::qdMAX, AMRSC::MOT::i, AMRSC::MOT::KM, AMRSC::MOT::R),
@@ -23,8 +23,8 @@ ControlSystem::ControlSystem(double dt)
     vw.setName("vw");
     fwKinOdom.setName("fwKinOdom");
     posController.setName("posController");
-    lowPassFilter1.setName("lowPassFilter1");
-    lowPassFilter2.setName("lowPassFilter2");
+    lowPassRvRx.setName("lowPassRvRx");
+    lowPassOmegaR.setName("lowPassOmegaR");
     invKin.setName("invKin");
     piController.setName("PI Controller");
     invMotMod.setName("invMotMod");
@@ -44,8 +44,8 @@ ControlSystem::ControlSystem(double dt)
     KFwr.getX(2).getSignal().setName("Observed right motor current [A]");
     KFwr.getX(3).getSignal().setName("Observed right wheel acceleration offset [m/s²]");
     vw.getOut().getSignal().setName("Observed wheel velocities [m/s]");
-    lowPassFilter1.getOut().getSignal().setName("Filtered robot velocity setpoint in the robot frame [m/s]");
-    lowPassFilter2.getOut().getSignal().setName("Filtered robot angular velocity setpoint in the robot frame [rad/s]");
+    lowPassRvRx.getOut().getSignal().setName("Filtered robot velocity setpoint in the robot frame [m/s]");
+    lowPassOmegaR.getOut().getSignal().setName("Filtered robot angular velocity setpoint in the robot frame [rad/s]");
     UM.getOut(0).getSignal().setName("Left motor voltage setpoint [V]");
     UM.getOut(0).getSignal().setName("Right motor voltage setpoint [V]");
 
@@ -57,10 +57,10 @@ ControlSystem::ControlSystem(double dt)
     fwKinOdom.getIn().connect(vw.getOut());
     posController.getInGrR().connect(fwKinOdom.getOutGrR());
     posController.getInphi().connect(fwKinOdom.getOutphi());
-    lowPassFilter1.getIn().connect(posController.getOutRvRx());
-    lowPassFilter2.getIn().connect(posController.getOutomegaR());
-    invKin.getIn(0).connect(lowPassFilter1.getOut());
-    invKin.getIn(1).connect(lowPassFilter2.getOut());
+    lowPassRvRx.getIn().connect(posController.getOutRvRx());
+    lowPassOmegaR.getIn().connect(posController.getOutomegaR());
+    invKin.getIn(0).connect(lowPassRvRx.getOut());
+    invKin.getIn(1).connect(lowPassOmegaR.getOut());
     piController.getInqds().connect(invKin.getOut());
     piController.getInqd().connect(vw.getOut());
     invMotMod.getInQ().connect(piController.getOutQ());
@@ -79,8 +79,8 @@ ControlSystem::ControlSystem(double dt)
     timedomain.addBlock(vw);
     timedomain.addBlock(fwKinOdom);
     timedomain.addBlock(posController);
-    timedomain.addBlock(lowPassFilter1);
-    timedomain.addBlock(lowPassFilter2);
+    timedomain.addBlock(lowPassRvRx);
+    timedomain.addBlock(lowPassOmegaR);
     timedomain.addBlock(invKin);
     timedomain.addBlock(piController);
     timedomain.addBlock(invMotMod);
