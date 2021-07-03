@@ -8,7 +8,7 @@
 #include <eeros/control/Mux.hpp>
 #include <eeros/control/D.hpp>
 #include "customBlocks/fwKinOdom.hpp"
-#include "customBlocks/PositionController.hpp"
+#include "customBlocks/TCPVectorPositionController.hpp"
 #include "customBlocks/InvKin.hpp"
 #include "customBlocks/PIController.hpp"
 #include "customBlocks/InvMotMod.hpp"
@@ -31,7 +31,7 @@ public:
     KalmanFilter<1, 1, 4, 1> KFwl, KFwr;
     Mux<2> vw;
     FwKinOdom fwKinOdom;
-    PositionController posController;
+    TCPVectorPositionController posController;
     LowPassFilter<> lowPassRvRx, lowPassOmegaR;
     InvKin invKin;
     PIController<eeros::math::Vector2> piController;

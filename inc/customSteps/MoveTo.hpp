@@ -15,18 +15,17 @@ public:
         log.info() << "Step created: " << name;
     }
 
-    int operator()(double xT, double yT, double phiT)
+    int operator()(double xT, double yT)
     {
         this->xT = xT;
         this->yT = yT;
-        this->phiT = phiT;
         return start();
     }
 
     int action()
     {
-        cs.posController.setTarget(xT, yT, phiT);
-        log.info() << "Target pose set to x: " << xT << ", y: " << yT << ", phi: " << phiT;
+        cs.posController.setTarget({xT, yT});
+        log.info() << "Target pose set to x: " << xT << ", y: " << yT;
         log.info() << "Start moving.";
         return 0;
     }
@@ -39,7 +38,7 @@ public:
     }
 
 private:
-    double xT, yT, phiT;
+    double xT, yT;
     ControlSystem &cs;
 };
 

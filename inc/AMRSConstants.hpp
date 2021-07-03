@@ -22,11 +22,12 @@ namespace AMRSC
         const double K3 = 1.5;
         const double posTol = 1e-3; // [m]
         const double rotTol = 1e-3; // [rad]
+        const double vMax = 0.1; // [m/s]
     }
     namespace ROB
     {
-        const double B = 0.15; // [m]
-        const double L = 0.16; // [m]
+        const double B = 0.155; // [m]
+        const double L = 0.155; // [m]
     }
     namespace KF
     {

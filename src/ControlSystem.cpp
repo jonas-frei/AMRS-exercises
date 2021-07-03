@@ -5,10 +5,10 @@ ControlSystem::ControlSystem(double dt)
       KFwl(AMRSC::KF::Ad, AMRSC::KF::Bd, AMRSC::KF::C, AMRSC::KF::Gd, AMRSC::KF::Q, AMRSC::KF::R),
       KFwr(AMRSC::KF::Ad, AMRSC::KF::Bd, AMRSC::KF::C, AMRSC::KF::Gd, AMRSC::KF::Q, AMRSC::KF::R),
       fwKinOdom(AMRSC::ROB::B, AMRSC::ROB::L),
-      posController(AMRSC::CONT::K1, AMRSC::CONT::K2, AMRSC::CONT::K3),
+      posController(1, AMRSC::CONT::D, AMRSC::CONT::posTol, AMRSC::CONT::vMax),
       lowPassRvRx(1, 0.2),
       lowPassOmegaR(1, 0.2),
-      invKin(AMRSC::ROB::B),
+      invKin(AMRSC::ROB::B, AMRSC::ROB::L),
       piController(1.0 / dt, AMRSC::CONT::D, AMRSC::CONT::s, AMRSC::CONT::M, AMRSC::CONT::ILIMIT),
       invMotMod(AMRSC::MOT::QMAX, AMRSC::MOT::qdMAX, AMRSC::MOT::i, AMRSC::MOT::KM, AMRSC::MOT::R),
       Mwl("motor1"), Mwr("motor2"),
@@ -55,12 +55,11 @@ ControlSystem::ControlSystem(double dt)
     vw.getIn(0).connect(KFwl.getX(1));
     vw.getIn(1).connect(KFwr.getX(1));
     fwKinOdom.getIn().connect(vw.getOut());
-    posController.getInGrR().connect(fwKinOdom.getOutGrT());
-    posController.getInphi().connect(fwKinOdom.getOutphi());
-    lowPassRvRx.getIn().connect(posController.getOutRvRx());
-    lowPassOmegaR.getIn().connect(posController.getOutomegaR());
-    invKin.getIn(0).connect(lowPassRvRx.getOut());
-    invKin.getIn(1).connect(lowPassOmegaR.getOut());
+    posController.getIn().connect(fwKinOdom.getOutGrT());
+    //lowPassRvRx.getIn().connect(posController.getOutRvRx());
+    //lowPassOmegaR.getIn().connect(posController.getOutomegaR());
+    invKin.getInGvT().connect(posController.getOut());
+    invKin.getInPhi().connect(fwKinOdom.getOutphi());
     piController.getInqds().connect(invKin.getOut());
     piController.getInqd().connect(vw.getOut());
     invMotMod.getInQ().connect(piController.getOutQ());
@@ -79,8 +78,8 @@ ControlSystem::ControlSystem(double dt)
     timedomain.addBlock(vw);
     timedomain.addBlock(fwKinOdom);
     timedomain.addBlock(posController);
-    timedomain.addBlock(lowPassRvRx);
-    timedomain.addBlock(lowPassOmegaR);
+    //timedomain.addBlock(lowPassRvRx);
+    //timedomain.addBlock(lowPassOmegaR);
     timedomain.addBlock(invKin);
     timedomain.addBlock(piController);
     timedomain.addBlock(invMotMod);
