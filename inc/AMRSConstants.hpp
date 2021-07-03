@@ -8,7 +8,7 @@ namespace AMRSC
         const double QMAX = 2.5;                // [N]
         const double qdMAX = 0.848;             // [m/s]
         const double i = 3441.0 / 104.0 / 0.04; // [1/m]
-        const double R = 8.0;                   // [hm]
+        const double R = 8.0;                   // [Ohm]
         const double KM = 8.44e-3;              // [Nm/A]
     }
     namespace CONT
@@ -26,6 +26,7 @@ namespace AMRSC
     namespace ROB
     {
         const double B = 0.15; // [m]
+        const double L = 0.16; // [m]
     }
     namespace KF
     {

@@ -4,7 +4,7 @@ ControlSystem::ControlSystem(double dt)
     : Ewl("enc1"), Ewr("enc2"),
       KFwl(AMRSC::KF::Ad, AMRSC::KF::Bd, AMRSC::KF::C, AMRSC::KF::Gd, AMRSC::KF::Q, AMRSC::KF::R),
       KFwr(AMRSC::KF::Ad, AMRSC::KF::Bd, AMRSC::KF::C, AMRSC::KF::Gd, AMRSC::KF::Q, AMRSC::KF::R),
-      fwKinOdom(AMRSC::ROB::B),
+      fwKinOdom(AMRSC::ROB::B, AMRSC::ROB::L),
       posController(AMRSC::CONT::K1, AMRSC::CONT::K2, AMRSC::CONT::K3),
       lowPassRvRx(1, 0.2),
       lowPassOmegaR(1, 0.2),
@@ -55,7 +55,7 @@ ControlSystem::ControlSystem(double dt)
     vw.getIn(0).connect(KFwl.getX(1));
     vw.getIn(1).connect(KFwr.getX(1));
     fwKinOdom.getIn().connect(vw.getOut());
-    posController.getInGrR().connect(fwKinOdom.getOutGrR());
+    posController.getInGrR().connect(fwKinOdom.getOutGrT());
     posController.getInphi().connect(fwKinOdom.getOutphi());
     lowPassRvRx.getIn().connect(posController.getOutRvRx());
     lowPassOmegaR.getIn().connect(posController.getOutomegaR());
