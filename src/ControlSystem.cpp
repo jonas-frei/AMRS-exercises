@@ -5,9 +5,7 @@ ControlSystem::ControlSystem(double dt)
       KFwl(AMRSC::KF::Ad, AMRSC::KF::Bd, AMRSC::KF::C, AMRSC::KF::Gd, AMRSC::KF::Q, AMRSC::KF::R),
       KFwr(AMRSC::KF::Ad, AMRSC::KF::Bd, AMRSC::KF::C, AMRSC::KF::Gd, AMRSC::KF::Q, AMRSC::KF::R),
       fwKinOdom(AMRSC::ROB::B, AMRSC::ROB::L),
-      posController(1, AMRSC::CONT::D, AMRSC::CONT::posTol, AMRSC::CONT::vMax),
-      lowPassRvRx(1, 0.2),
-      lowPassOmegaR(1, 0.2),
+      posController(AMRSC::CONT::fPos, AMRSC::CONT::D, AMRSC::CONT::posTol, AMRSC::CONT::vMax),
       invKin(AMRSC::ROB::B, AMRSC::ROB::L),
       piController(1.0 / dt, AMRSC::CONT::D, AMRSC::CONT::s, AMRSC::CONT::M, AMRSC::CONT::ILIMIT),
       invMotMod(AMRSC::MOT::QMAX, AMRSC::MOT::qdMAX, AMRSC::MOT::i, AMRSC::MOT::KM, AMRSC::MOT::R),
@@ -23,8 +21,6 @@ ControlSystem::ControlSystem(double dt)
     vw.setName("vw");
     fwKinOdom.setName("fwKinOdom");
     posController.setName("posController");
-    lowPassRvRx.setName("lowPassRvRx");
-    lowPassOmegaR.setName("lowPassOmegaR");
     invKin.setName("invKin");
     piController.setName("PI Controller");
     invMotMod.setName("invMotMod");
@@ -44,8 +40,6 @@ ControlSystem::ControlSystem(double dt)
     KFwr.getX(2).getSignal().setName("Observed right motor current [A]");
     KFwr.getX(3).getSignal().setName("Observed right wheel acceleration offset [m/s²]");
     vw.getOut().getSignal().setName("Observed wheel velocities [m/s]");
-    lowPassRvRx.getOut().getSignal().setName("Filtered robot velocity setpoint in the robot frame [m/s]");
-    lowPassOmegaR.getOut().getSignal().setName("Filtered robot angular velocity setpoint in the robot frame [rad/s]");
     UM.getOut(0).getSignal().setName("Left motor voltage setpoint [V]");
     UM.getOut(0).getSignal().setName("Right motor voltage setpoint [V]");
 
@@ -56,8 +50,6 @@ ControlSystem::ControlSystem(double dt)
     vw.getIn(1).connect(KFwr.getX(1));
     fwKinOdom.getIn().connect(vw.getOut());
     posController.getIn().connect(fwKinOdom.getOutGrT());
-    //lowPassRvRx.getIn().connect(posController.getOutRvRx());
-    //lowPassOmegaR.getIn().connect(posController.getOutomegaR());
     invKin.getInGvT().connect(posController.getOut());
     invKin.getInPhi().connect(fwKinOdom.getOutphi());
     piController.getInqds().connect(invKin.getOut());
@@ -78,8 +70,6 @@ ControlSystem::ControlSystem(double dt)
     timedomain.addBlock(vw);
     timedomain.addBlock(fwKinOdom);
     timedomain.addBlock(posController);
-    //timedomain.addBlock(lowPassRvRx);
-    //timedomain.addBlock(lowPassOmegaR);
     timedomain.addBlock(invKin);
     timedomain.addBlock(piController);
     timedomain.addBlock(invMotMod);

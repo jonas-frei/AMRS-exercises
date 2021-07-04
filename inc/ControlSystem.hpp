@@ -32,7 +32,6 @@ public:
     Mux<2> vw;
     FwKinOdom fwKinOdom;
     TCPVectorPositionController posController;
-    LowPassFilter<> lowPassRvRx, lowPassOmegaR;
     InvKin invKin;
     PIController<eeros::math::Vector2> piController;
     InvMotMod<eeros::math::Vector2> invMotMod;

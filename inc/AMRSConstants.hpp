@@ -23,6 +23,7 @@ namespace AMRSC
         const double posTol = 1e-3; // [m]
         const double rotTol = 1e-3; // [rad]
         const double vMax = 0.1; // [m/s]
+        const double fPos = 1.0; // [Hz]
     }
     namespace ROB
     {
