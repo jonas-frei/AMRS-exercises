@@ -10,8 +10,11 @@ ControlSystem::ControlSystem(double dt)
       piController(1.0 / dt, AMRSC::CONT::D, AMRSC::CONT::s, AMRSC::CONT::M, AMRSC::CONT::ILIMIT),
       invMotMod(AMRSC::MOT::QMAX, AMRSC::MOT::qdMAX, AMRSC::MOT::i, AMRSC::MOT::KM, AMRSC::MOT::R),
       Mwl("motor1"), Mwr("motor2"),
+      servoController({AMRSC::SERVO::S1Channel, AMRSC::SERVO::S2Channel},
+                      {AMRSC::SERVO::S1InitPos, AMRSC::SERVO::S2InitPos}, 1.0 / AMRSC::SERVO::f),
 
-      timedomain("Main time domain", dt, true)
+      timedomain("Main time domain", dt, true),
+      servoTimedomain("Servo motor time domain", 0.02, false)
 {
     // Name all blocks
     Ewl.setName("Ewl");
@@ -79,6 +82,9 @@ ControlSystem::ControlSystem(double dt)
     timedomain.addBlock(Mwl);
     timedomain.addBlock(Mwr);
 
+    servoTimedomain.addBlock(servoController);
+
     // Add timedomain to executor
     eeros::Executor::instance().add(timedomain);
+    eeros::Executor::instance().add(servoTimedomain);
 }

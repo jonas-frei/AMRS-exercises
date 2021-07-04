@@ -11,6 +11,14 @@ namespace AMRSC
         const double R = 8.0;                   // [Ohm]
         const double KM = 8.44e-3;              // [Nm/A]
     }
+    namespace SERVO
+    {
+        const int S1Channel = 1;
+        const int S2Channel = 2;
+        const double S1InitPos = -1.5; // [Normalized PWM]
+        const double S2InitPos = 0.1; // [Normalized PWM]
+        const double f = 50.0; // [Hz]
+    }
     namespace CONT
     {
         const double D = 0.7;      // [-]

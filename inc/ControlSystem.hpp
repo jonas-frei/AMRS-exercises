@@ -18,6 +18,7 @@
 #include <eeros/control/Trace.hpp>
 #include "customBlocks/LowPassFilter.hpp"
 #include "customBlocks/KalmanFilter.hpp"
+#include "customBlocks/ServoController.hpp"
 
 using namespace eeros::control;
 
@@ -37,8 +38,9 @@ public:
     InvMotMod<eeros::math::Vector2> invMotMod;
     DeMux<2> UM;
     PeripheralOutput<> Mwl, Mwr;
+    ServoController<> servoController;
 
-    TimeDomain timedomain;
+    TimeDomain timedomain, servoTimedomain;
 };
 
 #endif // CONTROLSYSTEM_HPP

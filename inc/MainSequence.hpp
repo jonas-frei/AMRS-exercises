@@ -8,6 +8,7 @@
 #include "ControlSystem.hpp"
 #include <eeros/sequencer/Wait.hpp>
 #include "customSteps/MoveTo.hpp"
+#include "customSteps/MoveServo.hpp"
 
 class MainSequence : public eeros::sequencer::Sequence
 {
@@ -21,7 +22,8 @@ public:
           cs(cs),
 
           sleep("Sleep", this),
-          moveTo("Move to", this, cs)
+          moveTo("Move to", this, cs),
+          moveServo("Move Servo", this, cs)
     {
         log.info() << "Sequence created: " << name;
     }
@@ -34,10 +36,14 @@ public:
         moveTo(0.5, 0.0);
         sleep(1.0);
         moveTo(0.5, 0.5);
+        moveServo(2, 1.5);
+        moveServo(1, 0.0);
         sleep(1.0);
         moveTo(0.0, 0.5);
         sleep(1.0);
         moveTo(0.0, 0.0);
+        moveServo(1, -1.5);
+        moveServo(2, 0.1);
         if (eeros::sequencer::Sequencer::running)
             ss.triggerEvent(sp.abort);
         return 0;
@@ -50,6 +56,7 @@ private:
 
     eeros::sequencer::Wait sleep;
     MoveTo moveTo;
+    MoveServo moveServo;
 };
 
 #endif // MAINSEQUENCE_HPP_
